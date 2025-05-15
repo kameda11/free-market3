@@ -1,0 +1,206 @@
+/* プロフィール画像、ユーザー名、プロフィール編集ボタンを横並びに */
+.profile__info {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin: 50px 200px;
+}
+
+.profile__image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* 丸くする */
+    overflow: hidden;
+    flex-shrink: 0;
+    /* 画像のサイズを維持 */
+}
+
+.profile__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile__info p {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.profile__edit-button {
+    padding: 8px 16px;
+    color: #FF5555;
+    border: 2px solid #FF5555;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    display: inline-block;
+    text-decoration: none;
+    margin-left: auto;
+    display: block;
+}
+
+/* 出品商品、購入商品カードレイアウト */
+.profile__tab-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* 商品カードラッパー */
+.l-wrapper {
+    display: inline-block;
+    width: 280px;
+    margin: 15px;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 280px;
+    height: 100%;
+}
+
+/* 商品カード全体 */
+.card {
+    overflow: hidden;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+/* サムネイル枠 */
+.card__thumbnail {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+    margin: 0;
+    /* 1:1比率を維持 */
+}
+
+/* サムネイル画像 */
+.card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* 商品名 */
+.card__title {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.card__button {
+    text-decoration: none;
+}
+
+/* カード本文 */
+.card__body {
+    padding: 15px;
+}
+
+.sold-label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-weight: bold;
+}
+
+/* タブのデザイン */
+.profile__tabs {
+    display: flex;
+    justify-content: left;
+    gap: 16px;
+    padding: 30px 10px 5px 100px;
+    border-bottom: 2px solid #5F5F5F;
+}
+
+.profile__tabs a {
+    text-decoration: none;
+}
+
+.profile__tabs button {
+    padding: 10px 20px;
+    color: #5F5F5F;
+    font-size: 16px;
+    font-weight: 700;
+    background: none;
+    border: none;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    border-radius: 10px;
+    position: relative;
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+}
+
+.profile__tabs {
+    display: flex;
+    justify-content: left;
+    gap: 20px;
+}
+
+.profile__tab-link {
+    text-decoration: none;
+}
+
+.profile__tab-button {
+    padding: 10px 15px;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.profile__tab-button.active {
+    color: #FF0000;
+    border: none;
+    background: none;
+}

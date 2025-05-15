@@ -1,0 +1,126 @@
+/* 商品カードラッパー */
+.l-wrapper {
+    display: inline-block;
+    width: 280px;
+    margin: 15px;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 280px;
+    height: 100%;
+}
+
+/* 商品カード全体 */
+.card {
+    overflow: hidden;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+/* サムネイル枠 */
+.card__thumbnail {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+    margin: 0;
+    /* 1:1比率を維持 */
+}
+
+/* サムネイル画像 */
+.card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* 商品名 */
+.card__title {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.card__button {
+    text-decoration: none;
+}
+
+/* カード本文 */
+.card__body {
+    padding: 15px;
+}
+
+/* フィルターボタン */
+.filter-buttons {
+    display: none;
+}
+
+.filter-buttons a {
+    padding: 10px 15px;
+    text-decoration: none;
+    margin-right: 10px;
+    color: #5F5F5F;
+}
+
+.filter-buttons a.active {
+    color: #FF0000;
+    border: none;
+}
+
+/* タブボタン */
+.filter-buttons {
+    display: flex;
+    justify-content: left;
+    gap: 16px;
+    padding: 30px 10px 5px 100px;
+    border-bottom: 2px solid #5F5F5F;
+}
+
+.tab-button {
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #5F5F5F;
+    cursor: pointer;
+}
+
+/* セクションのスライド切り替え風アニメーション */
+.content-section {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.content-section.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sold-label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-weight: bold;
+}
+
+.card__thumbnail {
+    position: relative;
+}
