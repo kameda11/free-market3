@@ -239,3 +239,9 @@ p {
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}

@@ -10,7 +10,7 @@
     <h2>メール認証のお願い</h2>
     <p>以下のボタンをクリックして、メール認証を完了してください。</p>
 
-    <a href="{{ $verificationUrl }}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
+    <a href="{{ $verificationUrl }}" style="display: inline-block; padding: 10px 20px; background-color: #FF5555; color: white; text-decoration: none; border-radius: 5px;">
         メール認証を完了する
     </a>
 

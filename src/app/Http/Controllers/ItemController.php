@@ -62,13 +62,10 @@ class ItemController extends Controller
         // お気に入り商品の取得（ログインしている場合のみ）
         $favoriteExhibitions = collect();
         if ($userId) {
-            $favoriteExhibitions = Exhibition::whereIn('id', function ($query) use ($userId) {
-                $query->select('exhibition_id')
-                    ->from('favorites')
-                    ->where('user_id', $userId);
-            })
-                ->where('user_id', '!=', $userId)
-                ->with('purchase')
+            $favoriteExhibitions = Exhibition::join('favorites', 'exhibitions.id', '=', 'favorites.exhibition_id')
+                ->where('favorites.user_id', $userId)
+                ->select('exhibitions.*')
+                ->with(['purchase', 'favorites', 'comments.user.profile'])
                 ->get();
         }
 
@@ -124,15 +121,30 @@ class ItemController extends Controller
 
     public function storeComment(CommentRequest $request)
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
 
-        Comment::create([
-            'user_id' => Auth::id(), // ← ログインユーザーのIDを保存
-            'exhibition_id' => $validated['exhibition_id'],
-            'comment' => $validated['comment'],
-        ]);
+            Comment::create([
+                'user_id' => Auth::id(),
+                'exhibition_id' => $validated['exhibition_id'],
+                'comment' => $validated['comment'],
+            ]);
 
-        return back()->with('success', 'コメントを投稿しました！');
+            return response()->json([
+                'success' => true,
+                'message' => 'コメントを投稿しました！'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'コメントの投稿に失敗しました。'
+            ], 500);
+        }
     }
 
     public function show($item_id)
@@ -163,7 +175,7 @@ class ItemController extends Controller
         ]);
 
         $exhibitionId = $request->input('exhibition_id');
-        $user = $request->user(); // auth()->user() より読みやすい
+        $user = $request->user();
 
         $favorite = Favorite::where('user_id', $user->id)
             ->where('exhibition_id', $exhibitionId)

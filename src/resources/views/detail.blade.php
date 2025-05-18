@@ -113,15 +113,16 @@
         {{-- コメント投稿 --}}
         <div class="comment-form">
             <h4>商品へのコメント</h4>
-            @if(session('success'))
-            <p class="success">{{ session('success') }}</p>
-            @endif
-            <form action="{{ route('comments.store') }}" method="POST">
+            <div id="comment-message"></div>
+            <form id="comment-form" action="{{ url('/comments') }}" method="POST">
                 @csrf
                 <input type="hidden" name="exhibition_id" value="{{ $exhibition->id }}">
-                <textarea name="comment" id="comment" required></textarea>
+                <textarea name="comment" id="comment"></textarea>
                 <button type="submit">コメントを送信する</button>
             </form>
+            @error('comment')
+            <p class="error">{{ $message }}</p>
+            @enderror
         </div>
     </div>
 </div>
@@ -130,6 +131,7 @@
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // お気に入りボタンの処理
         document.querySelectorAll('.favorite-button').forEach(button => {
             button.addEventListener('click', function() {
                 const exhibitionId = this.dataset.id;
@@ -162,6 +164,63 @@
                     })
                     .catch(error => console.error('通信エラー:', error));
             });
+        });
+
+        // コメントフォームの処理
+        const commentForm = document.getElementById('comment-form');
+        const commentMessage = document.getElementById('comment-message');
+
+        commentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            try {
+                const formData = new FormData(this);
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const url = window.location.origin + '/comments';
+
+                // リクエストデータの準備
+                const requestData = {
+                    exhibition_id: formData.get('exhibition_id'),
+                    comment: formData.get('comment')
+                };
+
+                // リクエストの送信
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                // レスポンスの処理
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    commentMessage.innerHTML = `<p class="success">${data.message}</p>`;
+                    commentForm.reset();
+                    location.reload();
+                } else {
+                    // バリデーションエラーの処理
+                    if (data.errors) {
+                        const errorMessages = Object.values(data.errors).flat();
+                        commentMessage.innerHTML = errorMessages.map(msg => `<p class="error">${msg}</p>`).join('');
+                    } else {
+                        throw new Error(data.message || 'コメントの投稿に失敗しました。');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+
+                if (error.errors) {
+                    const errorMessages = Object.values(error.errors).flat();
+                    commentMessage.innerHTML = errorMessages.map(msg => `<p class="error">${msg}</p>`).join('');
+                } else {
+                    commentMessage.innerHTML = `<p class="error">${error.message || 'コメントの投稿に失敗しました。'}</p>`;
+                }
+            }
         });
     });
 </script>

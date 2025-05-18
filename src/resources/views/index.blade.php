@@ -51,7 +51,6 @@
 </div>
 @endsection
 
-
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', function() {

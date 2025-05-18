@@ -38,7 +38,7 @@ return [
     'digits_between'       => ':attributeは、:min桁から:max桁にしてください。',
     'dimensions'           => ':attributeの画像サイズが無効です',
     'distinct'             => ':attributeの値が重複しています。',
-    'email'                => ':attributeは、有効なメールアドレス形式で指定してください。',
+    'email'                => 'メールアドレスに＠を含めてください',
     'ends_with'            => ':attributeは、次のうちのいずれかで終わらなければなりません。: :values',
     'exists'               => '選択された:attributeは、有効ではありません。',
     'file'                 => ':attributeはファイルでなければいけません。',
@@ -133,33 +133,20 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-    ],
-
-    'custom' => [
         'post_code' => [
             'regex' => '郵便番号は「123-4567」の形式で入力してください。',
         ],
-    ],
-
-    'attributes' => [
-        'name' => 'お名前',
-        'post_code' => '郵便番号',
-        'address' => '住所',
-        'building' => '建物名',
-    ],
-
-    'custom' => [
+        'name' => [
+            'required' => 'お名前を入力してください',
+        ],
         'email' => [
             'required' => 'メールアドレスを入力してください',
-            'email' => 'メールアドレスに＠を含めてください。',
+            'email' => 'メールアドレスに＠を含めてください',
         ],
         'password' => [
             'required' => 'パスワードを入力してください',
-            'min:8' => 'パスワードは8文字以上で入力してください',
+            'min' => 'パスワードは8文字以上で入力してください',
             'confirmed' => 'パスワードと一致しません',
-        ],
-        'name' => [
-            'required' => 'お名前を入力してください',
         ],
     ],
 
@@ -174,5 +161,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'お名前',
+        'post_code' => '郵便番号',
+        'address' => '住所',
+        'building' => '建物名',
+    ],
 ];

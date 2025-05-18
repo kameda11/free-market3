@@ -25,8 +25,14 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required | email',
-            'password' => 'required | min:8 | confirmed',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
         ];
     }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
 }
