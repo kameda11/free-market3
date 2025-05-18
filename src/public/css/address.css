@@ -1,14 +1,15 @@
 .address-edit {
     padding: 20px;
     max-width: 600px;
-    margin: 30px auto;
+    margin: 0 auto;
+    gap: 20px;
 }
 
 .address-edit h2 {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
-    color: #333;
+    color: #000000;
 }
 
 .address-form {
@@ -26,7 +27,8 @@
 .form-group label {
     font-size: 16px;
     font-weight: 700;
-    color: #333;
+    color: #000000;
+    margin-top: 40px;
 }
 
 .form-group input {
@@ -49,10 +51,5 @@
     border: none;
     border-radius: 5px;
     width: 100%;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.update-button:hover {
-    background-color: #ff3333;
+    margin-top: 60px;
 }

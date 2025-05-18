@@ -25,6 +25,9 @@
                         </div>
                     </label>
                     <input type="file" name="product_image" id="product_image" accept="image/*" class="image-input">
+                    @error('product_image')
+                    <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
         </div>

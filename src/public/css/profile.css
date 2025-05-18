@@ -92,7 +92,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
 }
 
 /* 商品名 */
@@ -104,6 +103,10 @@
 
 .card__button {
     text-decoration: none;
+}
+
+.l-wrapper {
+    margin: 15px;
 }
 
 /* カード本文 */

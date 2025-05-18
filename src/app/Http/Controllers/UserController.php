@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Exhibition;
 use App\Models\Address;
+use App\Models\Profile;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\AddressRequest;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EditRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -63,7 +64,8 @@ class UserController extends Controller
 
             // プロフィール情報の更新または作成
             if (!$user->profile) {
-                $user->profile()->create([
+                Profile::create([
+                    'user_id' => $user->id,
                     'profile_image' => 'profiles/' . $imageName
                 ]);
             } else {
@@ -74,7 +76,7 @@ class UserController extends Controller
         }
 
         // ユーザー情報の更新
-        $user->update([
+        User::where('id', $user->id)->update([
             'name' => $request->name
         ]);
 
