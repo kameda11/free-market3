@@ -11,27 +11,37 @@
     color: #333;
 }
 
-.address-edit form {
+.address-form {
     display: flex;
     flex-direction: column;
+    gap: 20px;
 }
 
-.address-edit label {
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
     font-size: 16px;
-    margin-bottom: 8px;
-    color: #333;
     font-weight: 700;
+    color: #333;
 }
 
-.address-edit input[type="text"] {
+.form-group input {
     padding: 10px;
-    margin-bottom: 20px;
-    width: 100%;
     border: 1px solid #5F5F5F;
     border-radius: 4px;
+    font-size: 16px;
 }
 
-.address-edit button {
+.error {
+    color: #dc3545;
+    font-size: 14px;
+}
+
+.update-button {
     background-color: #FF5555;
     color: #fff;
     font-size: 16px;
@@ -39,10 +49,10 @@
     border: none;
     border-radius: 5px;
     width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.address-edit .error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
+.update-button:hover {
+    background-color: #ff3333;
 }

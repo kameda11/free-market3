@@ -37,9 +37,9 @@
         </div>
 
         <div class="profile-edit__field">
-            <label for="postal_code" class="profile-edit__label">郵便番号</label>
-            <input type="text" name="postal_code" id="postal_code" class="profile-edit__input" value="{{ old('postal_code', $address->post_code ?? '') }}" required>
-            @error('postal_code')
+            <label for="post_code" class="profile-edit__label">郵便番号</label>
+            <input type="text" name="post_code" id="post_code" class="profile-edit__input" value="{{ old('post_code', $address->post_code ?? '') }}" required>
+            @error('post_code')
             <span class="profile-edit__error">{{ $message }}</span>
             @enderror
         </div>

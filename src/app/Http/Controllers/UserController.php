@@ -10,6 +10,7 @@ use App\Models\Address;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\AddressRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\EditRequest;
 
 class UserController extends Controller
 {
@@ -46,17 +47,9 @@ class UserController extends Controller
         return view('edit', compact('user', 'address'));
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(EditRequest $request)
     {
         $user = Auth::user();
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:8',
-            'address' => 'required|string|max:255',
-            'building' => 'nullable|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
 
         if ($request->hasFile('profile_image')) {
             // 古い画像の削除
@@ -80,18 +73,21 @@ class UserController extends Controller
             }
         }
 
-        $user->name = $request->name;
+        // ユーザー情報の更新
+        $user->update([
+            'name' => $request->name
+        ]);
 
         // 住所情報の更新
         $address = $user->address ?? new Address();
         $address->user_id = $user->id;
-        $address->name = $user->name; // ユーザー名を住所のnameとして使用
-        $address->post_code = $request->postal_code;
+        $address->name = $user->name;
+        $address->post_code = $request->post_code;
         $address->address = $request->address;
         $address->building = $request->building;
         $address->save();
 
-        return redirect()->route('mypage');
+        return redirect()->route('mypage')->with('success', 'プロフィールを更新しました');
     }
 
     public function addresses()
@@ -124,12 +120,14 @@ class UserController extends Controller
         // 商品IDがある場合は購入画面にリダイレクト
         if ($request->has('item_id')) {
             return redirect()->route('purchase', [
-                'item_id' => $request->item_id
+                'exhibition_id' => $request->item_id
             ])->with('success', '住所を更新しました');
         }
 
-        // 商品IDがない場合はマイページにリダイレクト
-        return redirect()->route('mypage')->with('success', '住所を更新しました');
+        // 商品IDがない場合は購入画面にリダイレクト
+        return redirect()->route('purchase', [
+            'exhibition_id' => 1  // デフォルトの商品ID
+        ])->with('success', '住所を更新しました');
     }
 
     public function purchaseAddress($item_id)

@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/address', [UserController::class, 'address']);
     Route::get('/mypage', [UserController::class, 'profile'])->name('mypage');
     Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
-    Route::post('/address/update', [UserController::class, 'updateAddress'])->name('address.update');
+    Route::put('/address/update', [UserController::class, 'updateAddress'])->name('address.update');
     Route::get('/purchase/{exhibition_id}', [ItemController::class, 'purchases'])->name('purchase');
     Route::post('/purchase/complete', [ItemController::class, 'complete'])->name('purchase.complete');
     Route::get('/sell', [ItemController::class, 'create'])->name('sell');
