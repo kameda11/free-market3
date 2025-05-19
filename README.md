@@ -58,7 +58,7 @@ php artisan db:seed
 ```
 
 ## 使用技術(実行環境)
-・PHP 7.4.9 </br>
+・PHP 7.4.9  </br>
 ・Laravel 8.83.29 </br>
 ・MySQL 15.1 </br>
 
