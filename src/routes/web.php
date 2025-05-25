@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\StripeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,3 +67,7 @@ Route::get('/purchase/address/{item_id}', [UserController::class, 'purchaseAddre
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::post('/store-tab', [SearchController::class, 'storeTab'])->name('store.tab');
+
+Route::post('/stripe/create-checkout-session', [StripeController::class, 'createCheckoutSession'])->name('stripe.checkout');
+Route::get('/purchase/success', [StripeController::class, 'success'])->name('purchase.success');
+Route::get('/purchase/cancel', [StripeController::class, 'cancel'])->name('purchase.cancel');

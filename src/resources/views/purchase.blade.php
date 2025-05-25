@@ -2,6 +2,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/purchase.css') }}">
+<script src="https://js.stripe.com/v3/"></script>
 @endsection
 
 @section('content')
@@ -86,11 +87,20 @@
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Stripeの初期化
+        const stripeKey = "{{ config('services.stripe.key') }}";
+        if (!stripeKey) {
+            console.error('Stripe key is not configured');
+            return;
+        }
+        const stripe = Stripe(stripeKey);
+
         const paymentSelect = document.querySelector('.payment-select');
         const paymentMethodInput = document.getElementById('payment_method');
         const paymentMethodDisplay = document.getElementById('payment-method-display');
+        const purchaseForm = document.getElementById('purchase-form');
 
-        // 初期状態ではコンビニ払いを選択
+        // 初期状態ではコンビニ支払いを選択
         paymentMethodInput.value = '1';
 
         paymentSelect.addEventListener('change', function() {
@@ -98,6 +108,58 @@
             if (selectedOption.value !== '') {
                 paymentMethodInput.value = this.value;
                 paymentMethodDisplay.textContent = selectedOption.text;
+            }
+        });
+
+        purchaseForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (paymentMethodInput.value === '2') { // カード支払いの場合
+                try {
+                    // CSRFトークンを取得
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    if (!token) {
+                        throw new Error('CSRF token not found');
+                    }
+
+                    // チェックアウトセッションを作成
+                    const response = await fetch('/stripe/create-checkout-session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({
+                            exhibition_id: document.querySelector('input[name="exhibition_id"]').value
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || '決済処理の準備中にエラーが発生しました。');
+                    }
+
+                    if (!data.id) {
+                        throw new Error('決済セッションの作成に失敗しました。');
+                    }
+
+                    // Stripeのチェックアウトページにリダイレクト
+                    const result = await stripe.redirectToCheckout({
+                        sessionId: data.id
+                    });
+
+                    if (result.error) {
+                        console.error('Stripe redirect error:', result.error);
+                        alert(result.error.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(error.message || '決済処理中にエラーが発生しました。');
+                }
+            } else {
+                // コンビニ支払いの場合は通常のフォーム送信
+                this.submit();
             }
         });
     });
