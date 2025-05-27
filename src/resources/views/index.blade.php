@@ -10,10 +10,10 @@
     <a class="tab-button" data-target="favorites">マイリスト</a>
 </div>
 
-<div id="all" class="content-section active">
+<div id="all" class="content-section active products-container">
     @foreach($allExhibitions as $exhibition)
-    <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
-        <div class="l-wrapper">
+    <div class="l-wrapper">
+        <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
             <article class="card">
                 <figure class="card__thumbnail">
                     <img src="{{ asset('storage/' . $exhibition->product_image) }}" alt="image" class="card__image">
@@ -23,15 +23,15 @@
                 </figure>
                 <h3 class="card__title">{{$exhibition->name}}</h3>
             </article>
-        </div>
-    </a>
+        </a>
+    </div>
     @endforeach
 </div>
 
-<div id="favorites" class="content-section">
+<div id="favorites" class="content-section products-container">
     @forelse($favoriteExhibitions as $exhibition)
-    <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
-        <div class="l-wrapper">
+    <div class="l-wrapper">
+        <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
             <article class="card">
                 <figure class="card__thumbnail">
                     <img src="{{ asset('storage/' . $exhibition->product_image) }}" alt="image" class="card__image">
@@ -41,8 +41,8 @@
                 </figure>
                 <h3 class="card__title">{{$exhibition->name}}</h3>
             </article>
-        </div>
-    </a>
+        </a>
+    </div>
     @empty
     <div class="no-favorites-message" style="text-align: center; padding: 40px; font-size: 18px; color: #777;">
         お気に入り登録している商品はありません。

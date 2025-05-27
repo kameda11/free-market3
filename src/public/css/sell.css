@@ -284,3 +284,120 @@ select.form-input option[value=""] {
     display: block;
 }
 
+/* メディアクエリ - PC (1400-1540px) */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .sell-container {
+        max-width: 900px;
+        margin: 3rem auto;
+        padding: 0 3rem;
+    }
+
+    .sell-title {
+        font-size: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .label-text {
+        font-size: 18px;
+    }
+
+    .form-input {
+        padding: 1rem;
+        font-size: 18px;
+    }
+
+    .category-chip {
+        padding: 0.5rem 1.5rem;
+        font-size: 16px;
+    }
+
+    .submit-button {
+        padding: 1rem 2.5rem;
+        font-size: 18px;
+        margin-top: 30px;
+    }
+
+    .image-upload-button {
+        height: 250px;
+    }
+
+    .upload-text {
+        font-size: 18px;
+        padding: 12px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .selected-image {
+        max-width: 400px;
+        max-height: 400px;
+    }
+}
+
+/* メディアクエリ - タブレット (768-850px) */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .sell-container {
+        max-width: 100%;
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+
+    .sell-title {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .label-text {
+        font-size: 14px;
+    }
+
+    .form-input {
+        padding: 0.5rem;
+        font-size: 14px;
+    }
+
+    .category-chip {
+        padding: 0.2rem 0.8rem;
+        font-size: 12px;
+    }
+
+    .submit-button {
+        padding: 0.5rem 1.5rem;
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .image-upload-button {
+        height: 150px;
+    }
+
+    .upload-text {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .selected-image {
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .category-container {
+        gap: 0.5rem;
+    }
+}

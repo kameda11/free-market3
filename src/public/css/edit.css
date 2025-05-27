@@ -171,3 +171,77 @@
     color: #155724;
     border: 1px solid #c3e6cb;
 }
+
+/* メディアクエリ - PC (1400-1540px) */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+
+    .address-edit-container,
+    .profile-edit {
+        max-width: 900px;
+        padding: 40px;
+    }
+
+    .address-edit-container h2,
+    .profile-edit__title {
+        font-size: 30px;
+        margin-bottom: 40px;
+    }
+
+    .form-label,
+    .profile-edit__label {
+        font-size: 18px;
+    }
+
+    .form-input,
+    .profile-edit__input {
+        font-size: 18px;
+        padding: 14px;
+    }
+
+    .submit-button,
+    .profile-edit__submit {
+        font-size: 20px;
+        padding: 18px;
+    }
+
+    .profile-edit__image-container {
+        gap: 60px;
+    }
+}
+
+/* メディアクエリ - タブレット (768-850px) */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+
+    .address-edit-container,
+    .profile-edit {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .address-edit-container h2,
+    .profile-edit__title {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .form-label,
+    .profile-edit__label {
+        font-size: 13px;
+    }
+
+    .form-input,
+    .profile-edit__input {
+        font-size: 13px;
+        padding: 7px;
+    }
+
+    .submit-button,
+    .profile-edit__submit {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .profile-edit__image-container {
+        gap: 20px;
+    }
+}

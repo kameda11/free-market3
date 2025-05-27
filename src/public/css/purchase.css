@@ -284,3 +284,65 @@ select.payment-select option[value=""] {
 .change-link:hover {
     text-decoration: underline;
 }
+
+/* メディアクエリ - PC (1400-1540px) */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .purchase-container {
+        max-width: 1400px;
+        margin: 3rem auto;
+        gap: 3rem;
+    }
+
+    .purchase-main {
+        padding: 3rem;
+    }
+
+    .purchase-sidebar {
+        padding: 3rem;
+    }
+
+    .product-image {
+        max-width: 400px;
+    }
+
+    .product-info h3 {
+        font-size: 28px;
+    }
+
+    .product-price {
+        font-size: 28px;
+    }
+}
+
+/* メディアクエリ - タブレット (768-850px) */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .purchase-container {
+        flex-direction: column;
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+    .purchase-main,
+    .purchase-sidebar {
+        padding: 1.5rem;
+    }
+
+    .product-details {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .product-image {
+        max-width: 100%;
+    }
+
+    .payment-method {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .price-table th,
+    .price-table td {
+        padding: 1rem;
+    }
+}

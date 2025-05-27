@@ -122,13 +122,13 @@ class ItemController extends Controller
     public function storeComment(CommentRequest $request)
     {
         try {
-            $validated = $request->validated();
+        $validated = $request->validated();
 
-            Comment::create([
+        Comment::create([
                 'user_id' => Auth::id(),
-                'exhibition_id' => $validated['exhibition_id'],
-                'comment' => $validated['comment'],
-            ]);
+            'exhibition_id' => $validated['exhibition_id'],
+            'comment' => $validated['comment'],
+        ]);
 
             return response()->json([
                 'success' => true,

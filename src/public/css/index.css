@@ -1,19 +1,34 @@
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.card__button--compact {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 /* 商品カードラッパー */
 .l-wrapper {
-    display: inline-block;
-    width: 280px;
-    margin: 15px;
+    width: calc(25% - 20px);
+    margin: 10px;
+    box-sizing: border-box;
 }
 
 .card-link {
     text-decoration: none;
     color: inherit;
     display: block;
-    width: 280px;
+    width: 100%;
     height: 100%;
 }
 
-/* 商品カード全体 */
 .card {
     overflow: hidden;
     background: #fff;
@@ -31,7 +46,6 @@
     padding-top: 100%;
     overflow: hidden;
     margin: 0;
-    /* 1:1比率を維持 */
 }
 
 /* サムネイル画像 */
@@ -48,7 +62,7 @@
 /* 商品名 */
 .card__title {
     font-size: 1.1rem;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: #333;
 }
 
@@ -58,7 +72,7 @@
 
 /* カード本文 */
 .card__body {
-    padding: 15px;
+    padding: 12px;
 }
 
 /* フィルターボタン */
@@ -95,7 +109,6 @@
     cursor: pointer;
 }
 
-/* セクションのスライド切り替え風アニメーション */
 .content-section {
     display: none;
     opacity: 0;
@@ -123,4 +136,88 @@
 
 .card__thumbnail {
     position: relative;
+}
+
+/* メディアクエリ - PC (1400-1540px) */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .products-container {
+        max-width: 1400px;
+        padding: 0 20px;
+    }
+
+    .l-wrapper {
+        width: calc(25% - 22.5px);
+        margin: 11.25px;
+    }
+
+    .card__title {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .filter-buttons {
+        padding: 40px 10px 10px 120px;
+    }
+
+    .tab-button {
+        padding: 12px 25px;
+        font-size: 18px;
+    }
+
+    .sold-label {
+        font-size: 22px;
+        padding: 10px 20px;
+    }
+
+    .content-section {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    .card__body {
+        padding: 15px;
+    }
+}
+
+/* メディアクエリ - タブレット (768-850px) */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .products-container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .l-wrapper {
+        width: calc(25% - 16px);
+        margin: 8px;
+    }
+
+    .card__title {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+
+    .filter-buttons {
+        padding: 20px 10px 5px 50px;
+        gap: 12px;
+    }
+
+    .tab-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .sold-label {
+        font-size: 16px;
+        padding: 6px 12px;
+    }
+
+    .content-section {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .card__body {
+        padding: 8px;
+    }
 }
