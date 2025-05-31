@@ -1,11 +1,10 @@
 .products-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 15px 15px;
 }
 
 .card__button--compact {
@@ -16,8 +15,8 @@
 
 /* 商品カードラッパー */
 .l-wrapper {
-    width: calc(25% - 20px);
-    margin: 10px;
+    width: calc(25% - 15px);
+    margin: 0;
     box-sizing: border-box;
 }
 
@@ -56,7 +55,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
 }
 
 /* 商品名 */
@@ -111,15 +109,11 @@
 
 .content-section {
     display: none;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    flex-wrap: wrap;
 }
 
 .content-section.active {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
+    display: flex;
 }
 
 .sold-label {
@@ -142,12 +136,13 @@
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
     .products-container {
         max-width: 1400px;
-        padding: 0 20px;
+        padding: 20px 0;
+        gap: 20px;
     }
 
     .l-wrapper {
-        width: calc(25% - 22.5px);
-        margin: 11.25px;
+        width: calc(25% - 15px);
+        margin: 0;
     }
 
     .card__title {
@@ -185,11 +180,12 @@
     .products-container {
         max-width: 100%;
         padding: 0 10px;
+        gap: 15px;
     }
 
     .l-wrapper {
-        width: calc(25% - 16px);
-        margin: 8px;
+        width: calc(25% - 12px);
+        margin: 0;
     }
 
     .card__title {
