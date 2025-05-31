@@ -125,32 +125,107 @@
 
 @section('js')
 <script>
-    window.addEventListener('load', function() {
-        const fileInput = document.getElementById('product_image');
-        const uploadText = document.getElementById('uploadText');
-        const imagePreview = document.getElementById('imagePreview');
-        const imagePreviewArea = document.getElementById('imagePreviewArea');
+    document.addEventListener('DOMContentLoaded', function() {
+        // カスタムセレクトボックスの実装
+        const customSelect = document.querySelector('select[name="condition"]');
+        const selectContainer = document.createElement('div');
+        selectContainer.className = 'custom-select';
 
-        if (fileInput && uploadText && imagePreview && imagePreviewArea) {
-            fileInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    // 画像プレビューを表示
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        imagePreview.style.display = 'block';
-                        uploadText.style.display = 'none';
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    // ファイルが選択されていない場合
-                    uploadText.style.display = 'block';
-                    imagePreview.src = '';
-                    imagePreview.style.display = 'none';
+        // 選択表示用の要素を作成
+        const selectSelected = document.createElement('div');
+        selectSelected.className = 'select-selected';
+        selectSelected.textContent = '選択してください';
+
+        // ドロップダウン用の要素を作成
+        const selectItems = document.createElement('div');
+        selectItems.className = 'select-items select-hide';
+
+        // オプションをコピー（空のオプションを除外）
+        Array.from(customSelect.options).forEach(option => {
+            if (option.value !== '') { // 空のオプションをスキップ
+                const div = document.createElement('div');
+                const originalText = option.text.replace('✔', '').replace('　', '');
+                div.textContent = option.selected ? '✔' + originalText : '　' + originalText;
+                if (option.selected) {
+                    div.classList.add('selected');
                 }
-            });
+                div.addEventListener('click', function() {
+                    // 以前の選択を解除
+                    selectItems.querySelectorAll('div').forEach(d => d.classList.remove('selected'));
+                    // 新しい選択を設定
+                    this.classList.add('selected');
+                    customSelect.value = option.value;
+                    selectSelected.textContent = this.textContent;
+                    selectItems.classList.add('select-hide');
+                    // 元のselectのchangeイベントを発火
+                    customSelect.dispatchEvent(new Event('change'));
+                });
+                selectItems.appendChild(div);
+            }
+        });
+
+        // 要素を配置
+        selectContainer.appendChild(selectSelected);
+        selectContainer.appendChild(selectItems);
+        customSelect.parentNode.insertBefore(selectContainer, customSelect);
+        customSelect.style.display = 'none';
+
+        // クリックイベントの設定
+        selectSelected.addEventListener('click', function(e) {
+            e.stopPropagation();
+            selectItems.classList.toggle('select-hide');
+            updateOptionStyles();
+        });
+
+        // 外側をクリックしたら閉じる
+        document.addEventListener('click', function() {
+            selectItems.classList.add('select-hide');
+        });
+
+        // 選択肢のスタイルを更新する関数
+        function updateOptionStyles() {
+            const options = customSelect.options;
+            const selectItemsDivs = selectItems.querySelectorAll('div');
+
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                if (option.value !== '') { // 空のオプションをスキップ
+                    const originalText = option.text.replace('✔', '').replace('　', '');
+                    if (option.selected) {
+                        option.text = '✔' + originalText;
+                        selectItemsDivs[i - 1].textContent = '✔' + originalText; // i-1 because we skip the empty option
+                        selectItemsDivs[i - 1].classList.add('selected');
+                    } else {
+                        option.text = '　' + originalText;
+                        selectItemsDivs[i - 1].textContent = '　' + originalText;
+                        selectItemsDivs[i - 1].classList.remove('selected');
+                    }
+                }
+            }
         }
+
+        // 画像プレビュー機能
+        const imageInput = document.querySelector('.image-input');
+        const imagePreview = document.querySelector('.image-preview');
+        const uploadButton = document.querySelector('.image-upload-button');
+        const uploadText = document.querySelector('.upload-text');
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadText.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        uploadButton.addEventListener('click', function() {
+            imageInput.click();
+        });
     });
 </script>
 @endsection

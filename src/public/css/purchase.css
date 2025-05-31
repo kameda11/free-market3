@@ -1,81 +1,3 @@
-.purchase-confirm {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.purchase-confirm h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.purchase-confirm p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #555;
-}
-
-.purchase-confirm p strong {
-    color: #000;
-}
-
-.purchase-confirm img {
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.purchase-confirm .total-price {
-    font-size: 18px;
-    font-weight: bold;
-    color: #e74c3c;
-    margin-bottom: 20px;
-}
-
-.purchase-confirm form {
-    display: flex;
-    flex-direction: column;
-}
-
-.purchase-confirm label {
-    font-size: 16px;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.purchase-confirm input[type="radio"] {
-    margin-right: 10px;
-}
-
-.purchase-confirm input[type="radio"]:checked {
-    background-color: #3498db;
-}
-
-.purchase-confirm button {
-    background-color: #27ae60;
-    color: #fff;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.purchase-confirm button:hover {
-    background-color: #2ecc71;
-}
-
-.purchase-confirm a {
-    color: #3498db;
-    text-decoration: none;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
 .purchase-container {
     display: flex;
     max-width: 1200px;
@@ -85,7 +7,7 @@
 
 .purchase-main {
     flex: 1.5;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .purchase-sidebar {
@@ -137,19 +59,24 @@
 
 .payment-method {
     position: relative;
-    width: 50%;
+    width: 70%;
     margin: 1rem 3rem;
+    color: #5F5F5F;
 }
 
 .payment-select {
     width: 100%;
     padding: 0.5rem 2.5rem 0.5rem 0.5rem;
-    border: 1px solid #5F5F5F;
+    border: 1.5px solid #B1B1B1;
     border-radius: 4px;
     font-size: 16px;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    background-color: #ffffff;
+    color: #5F5F5F;
+    position: relative;
+    z-index: 2;
 }
 
 .payment-method::after {
@@ -160,11 +87,10 @@
     transform: translateY(-50%);
     border-right: 5px solid transparent;
     border-left: 5px solid transparent;
-    border-top: 9px solid #555;
+    border-top: 9px solid #5F5F5F;
     pointer-events: none;
     z-index: 1;
 }
-
 
 .payment-section,
 .address-section {
@@ -181,12 +107,94 @@
 }
 
 select.payment-select option {
-    color: #fff;
+    color: #EAEAEA;
     background-color: #636769;
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    position: relative;
 }
 
-/* プレースホルダーオプションのスタイル */
+select.payment-select option:checked {
+    background-color: #5599EB;
+    color: #EAEAEA;
+}
+
 select.payment-select option[value=""] {
+    display: none;
+    color: #5599EB;
+}
+
+/* ドロップダウンリストのスタイル */
+select.payment-select:focus {
+    outline: none;
+    border-color: #EAEAEA;
+}
+
+select.payment-select option {
+    padding-left: 2rem;
+    text-align: left;
+}
+
+select.payment-select option:checked {
+    background-color: #5599EB;
+    color: #EAEAEA;
+}
+
+.custom-select {
+    position: relative;
+    width: 100%;
+    margin: 0.5rem;
+}
+
+.custom-select select {
+    display: none;
+}
+
+.select-selected {
+    background-color: #ffffff;
+    border: 1.5px solid #B1B1B1;
+    border-radius: 4px;
+    color: #5F5F5F;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0.1rem 2.5rem 0.1rem 0.5rem;
+    height: 2rem;
+    line-height: 1.8rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+}
+
+.select-items {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-color: #636769;
+    border: 1.5px solid #B1B1B1;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.select-items div {
+    color: #EAEAEA;
+    cursor: pointer;
+    padding: 0.1rem 2rem 0.1rem 0.5rem;
+    height: 2rem;
+    line-height: 1.8rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.select-items div.selected {
+    background-color: #5599EB;
+    margin: 0.3rem;
+    border-radius: 5px;
+}
+
+.select-hide {
     display: none;
 }
 
@@ -213,10 +221,6 @@ select.payment-select option[value=""] {
 
 .address-section a {
     color: #0073CC;
-    text-decoration: none;
-    font-weight: 500;
-    display: inline-block;
-    margin-top: 1rem;
 }
 
 .price-table {
@@ -234,17 +238,6 @@ select.payment-select option[value=""] {
     font-weight: 500;
 }
 
-.total-row {
-    border-top: 2px solid #ddd;
-}
-
-.total-row th,
-.total-row td {
-    padding-top: 1.5rem;
-    font-weight: bold;
-    color: #333;
-}
-
 #purchase-button {
     width: 100%;
     background-color: #FF5655;
@@ -254,9 +247,7 @@ select.payment-select option[value=""] {
     padding: 0.5rem;
     border: none;
     border-radius: 5px;
-
 }
-
 
 .section-title {
     font-size: 24px;
@@ -273,17 +264,22 @@ select.payment-select option[value=""] {
 }
 
 .change-link {
-    color: #FF5655;
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
 }
 
-.change-link:hover {
-    text-decoration: underline;
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ef9a9a;
+    font-size: 14px;
+    text-align: center;
 }
 
-/* メディアクエリ - PC (1400-1540px) */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
     .purchase-container {
         max-width: 1400px;
@@ -312,7 +308,6 @@ select.payment-select option[value=""] {
     }
 }
 
-/* メディアクエリ - タブレット (768-850px) */
 @media screen and (min-width: 768px) and (max-width: 850px) {
     .purchase-container {
         max-width: 1200px;
@@ -321,6 +316,7 @@ select.payment-select option[value=""] {
     }
 
     .purchase-main {
+        flex: 1.5;
         padding: 1rem;
     }
 

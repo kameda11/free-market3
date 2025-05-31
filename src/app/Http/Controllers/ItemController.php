@@ -122,13 +122,13 @@ class ItemController extends Controller
     public function storeComment(CommentRequest $request)
     {
         try {
-        $validated = $request->validated();
+            $validated = $request->validated();
 
-        Comment::create([
+            Comment::create([
                 'user_id' => Auth::id(),
-            'exhibition_id' => $validated['exhibition_id'],
-            'comment' => $validated['comment'],
-        ]);
+                'exhibition_id' => $validated['exhibition_id'],
+                'comment' => $validated['comment'],
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -209,15 +209,13 @@ class ItemController extends Controller
             $addressId = $request->input('address_id');
             $paymentMethod = $request->input('payment_method');
 
-            // 商品情報を取得
             $exhibition = Exhibition::findOrFail($exhibitionId);
 
-            // もし既に売り切れだったらエラーにする（ダブル購入防止）
             if ($exhibition->sold) {
-                return redirect()->route('index')->with('error', 'この商品は既に購入されています。');
+                return redirect()->route('purchase', ['exhibition_id' => $exhibitionId])
+                    ->with('error', 'この商品は既に購入されています。');
             }
 
-            // 購入履歴を作成
             $purchase = Purchase::create([
                 'user_id' => auth()->id(),
                 'exhibition_id' => $exhibitionId,

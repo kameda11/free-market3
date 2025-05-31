@@ -6,6 +6,11 @@
 @endsection
 
 @section('content')
+@if(session('error'))
+<div class="error-message">
+    {{ session('error') }}
+</div>
+@endif
 <div class="purchase-container">
     <div class="purchase-main">
         <div class="product-section">
@@ -25,8 +30,8 @@
                 <div class="payment-method">
                     <select name="payment_method" class="payment-select" required>
                         <option value="" selected>選択してください</option>
-                        <option value="1">コンビニ払い</option>
-                        <option value="2">カード払い</option>
+                        <option value="1">　コンビニ払い</option>
+                        <option value="2">　カード払い</option>
                     </select>
                 </div>
             </div>
@@ -87,6 +92,61 @@
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // カスタムセレクトボックスの実装
+        const customSelect = document.querySelector('.payment-select');
+        const selectContainer = document.createElement('div');
+        selectContainer.className = 'custom-select';
+
+        // 選択表示用の要素を作成
+        const selectSelected = document.createElement('div');
+        selectSelected.className = 'select-selected';
+        selectSelected.textContent = '選択してください';
+
+        // ドロップダウン用の要素を作成
+        const selectItems = document.createElement('div');
+        selectItems.className = 'select-items select-hide';
+
+        // オプションをコピー（空のオプションを除外）
+        Array.from(customSelect.options).forEach(option => {
+            if (option.value !== '') { // 空のオプションをスキップ
+                const div = document.createElement('div');
+                const originalText = option.text.replace('✓', '').replace('　', '');
+                div.textContent = option.selected ? '✓' + originalText : '　' + originalText;
+                if (option.selected) {
+                    div.classList.add('selected');
+                }
+                div.addEventListener('click', function() {
+                    // 以前の選択を解除
+                    selectItems.querySelectorAll('div').forEach(d => d.classList.remove('selected'));
+                    // 新しい選択を設定
+                    this.classList.add('selected');
+                    customSelect.value = option.value;
+                    selectSelected.textContent = this.textContent;
+                    selectItems.classList.add('select-hide');
+                    // 元のselectのchangeイベントを発火
+                    customSelect.dispatchEvent(new Event('change'));
+                });
+                selectItems.appendChild(div);
+            }
+        });
+
+        // 要素を配置
+        selectContainer.appendChild(selectSelected);
+        selectContainer.appendChild(selectItems);
+        customSelect.parentNode.insertBefore(selectContainer, customSelect);
+        customSelect.style.display = 'none';
+
+        // クリックイベントの設定
+        selectSelected.addEventListener('click', function(e) {
+            e.stopPropagation();
+            selectItems.classList.toggle('select-hide');
+            updateOptionStyles();
+        });
+
+        document.addEventListener('click', function() {
+            selectItems.classList.add('select-hide');
+        });
+
         // Stripeの初期化
         const stripeKey = "{{ config('services.stripe.key') }}";
         if (!stripeKey) {
@@ -95,19 +155,50 @@
         }
         const stripe = Stripe(stripeKey);
 
-        const paymentSelect = document.querySelector('.payment-select');
         const paymentMethodInput = document.getElementById('payment_method');
         const paymentMethodDisplay = document.getElementById('payment-method-display');
         const purchaseForm = document.getElementById('purchase-form');
 
-        // 初期状態ではコンビニ支払いを選択
         paymentMethodInput.value = '1';
 
-        paymentSelect.addEventListener('change', function() {
+        function updateOptionStyles() {
+            const options = customSelect.options;
+            const selectItemsDivs = selectItems.querySelectorAll('div');
+
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                if (option.value !== '') { // 空のオプションをスキップ
+                    const originalText = option.text.replace('✔', '').replace('　', '');
+                    if (option.selected) {
+                        const originalText = option.text.replace('✔', '').replace('　', '');
+                        option.text = '✔' + originalText;
+                        selectItemsDivs[i - 1].textContent = '✔' + originalText; // i-1 because we skip the empty option
+                        selectItemsDivs[i - 1].classList.add('selected');
+                    } else {
+                        option.text = '　' + originalText;
+                        selectItemsDivs[i - 1].textContent = '　' + originalText;
+                        selectItemsDivs[i - 1].classList.remove('selected');
+                    }
+                }
+            }
+        }
+
+        // ドロップダウンが閉じた時にチェックマークを削除
+        customSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             if (selectedOption.value !== '') {
                 paymentMethodInput.value = this.value;
-                paymentMethodDisplay.textContent = selectedOption.text;
+                paymentMethodDisplay.textContent = selectedOption.text.replace('✓', '').replace('　', '');
+                // チェックマークとスペースを削除
+                const options = this.options;
+                const selectItemsDivs = selectItems.querySelectorAll('div');
+
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value !== '') { // 空のオプションをスキップ
+                        options[i].text = options[i].text.replace('✓', '').replace('　', '');
+                        selectItemsDivs[i - 1].textContent = options[i].text; // i-1 because we skip the empty option
+                    }
+                }
             }
         });
 
