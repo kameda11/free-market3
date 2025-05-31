@@ -13,7 +13,6 @@
     height: 100%;
 }
 
-/* 商品カードラッパー */
 .l-wrapper {
     width: calc(25% - 15px);
     margin: 0;

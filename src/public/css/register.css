@@ -64,6 +64,8 @@ h2 {
 .login__link {
     margin-top: 20px;
     text-align: center;
+    color: #0073CC;
+    text-decoration: none;
 }
 
 /* メディアクエリ - PC (1400-1540px) */

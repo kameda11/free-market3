@@ -344,9 +344,8 @@ select.form-input option[value=""] {
 /* メディアクエリ - タブレット (768-850px) */
 @media screen and (min-width: 768px) and (max-width: 850px) {
     .sell-container {
-        max-width: 100%;
         margin: 1rem auto;
-        padding: 0 1rem;
+        padding: 0 4rem;
     }
 
     .sell-title {

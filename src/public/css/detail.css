@@ -275,19 +275,23 @@ p {
 /* メディアクエリ - タブレット (768-850px) */
 @media screen and (min-width: 768px) and (max-width: 850px) {
     .product-detail {
-        flex-direction: column;
         padding: 20px;
         margin: 20px auto;
+        flex-wrap: wrap;
     }
 
     .left-column {
-        width: 100%;
+        width: 50%;
         margin-right: 0;
         margin-bottom: 30px;
+        padding-right: 15px;
+        box-sizing: border-box;
     }
 
     .right-column {
-        width: 100%;
+        width: 50%;
+        padding-left: 15px;
+        box-sizing: border-box;
     }
 
     .product-info-item {

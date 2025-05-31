@@ -12,20 +12,17 @@
     color: #333;
 }
 
-/* フォームのスタイル */
 .address-edit-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* フォーム要素のラベルのスタイル */
 .form-label {
     font-weight: bold;
     color: #333;
 }
 
-/* フォーム入力フィールドのスタイル */
 .form-input {
     width: 100%;
     padding: 10px;
@@ -36,7 +33,6 @@
     box-sizing: border-box;
 }
 
-/* ボタンのスタイル */
 .submit-button {
     background-color: #FF5555;
     color: white;
@@ -214,7 +210,6 @@
 
     .address-edit-container,
     .profile-edit {
-        max-width: 100%;
         padding: 10px;
     }
 
