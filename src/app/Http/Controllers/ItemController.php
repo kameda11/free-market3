@@ -224,11 +224,9 @@ class ItemController extends Controller
                 'payment_method' => $paymentMethod,
             ]);
 
-            // 商品を売却済みに更新
             $exhibition->sold = true;
             $exhibition->save();
 
-            // 購入完了後、商品詳細ページにリダイレクト
             return redirect()->route('detail', ['item_id' => $exhibitionId])
                 ->with('success', '購入が完了しました！');
         } catch (\Exception $e) {
@@ -240,10 +238,9 @@ class ItemController extends Controller
     public function purchases($exhibition_id)
     {
         $exhibition = Exhibition::findOrFail($exhibition_id);
-        $quantity = 1; // デフォルトの数量
+        $quantity = 1;
         $user = auth()->user();
 
-        // ユーザーの住所情報を取得
         $address = $user->address;
 
         return view('purchase', compact('exhibition', 'quantity', 'address'));

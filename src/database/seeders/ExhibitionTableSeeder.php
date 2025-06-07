@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Exhibition;
+use App\Models\User;
 
 class ExhibitionTableSeeder extends Seeder
 {
@@ -14,6 +15,9 @@ class ExhibitionTableSeeder extends Seeder
      */
     public function run()
     {
+        // ユーザーIDを取得
+        $userIds = User::pluck('id')->toArray();
+
         $exhibitions = [
             [
                 'name' => 'メンズ腕時計',
@@ -21,7 +25,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => 'スタイリッシュなデザインのメンズ腕時計',
                 'product_image' => 'images/seed/watch.jpg',
                 'condition' => 'brand_new',
-                'user_id' => 1,
+                'user_id' => $userIds[0],
                 'category' => json_encode(['メンズ', 'アクセサリー'])
             ],
             [
@@ -30,7 +34,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => '高速で信頼性の高いハードディスク',
                 'product_image' => 'images/seed/hdd.jpg',
                 'condition' => 'used_good',
-                'user_id' => 2,
+                'user_id' => $userIds[1],
                 'category' => json_encode(['家電'])
             ],
             [
@@ -39,7 +43,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => '新鮮な玉ねぎ３束のセット',
                 'product_image' => 'images/seed/onion.jpg',
                 'condition' => 'used_acceptable',
-                'user_id' => 3,
+                'user_id' => $userIds[2],
                 'category' => json_encode(['キッチン'])
             ],
             [
@@ -48,7 +52,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => 'クラシックなデザインの革靴',
                 'product_image' => 'images/seed/shoes.jpg',
                 'condition' => 'used_poor',
-                'user_id' => 4,
+                'user_id' => $userIds[3],
                 'category' => json_encode(['メンズ', 'ファッション'])
             ],
             [
@@ -57,7 +61,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => '高機能なノートパソコン',
                 'product_image' => 'images/seed/laptop.jpg',
                 'condition' => 'used_like_new',
-                'user_id' => 5,
+                'user_id' => $userIds[4],
                 'category' => json_encode(['家電'])
             ],
             [
@@ -66,7 +70,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => '高音質のレコーディング用マイク',
                 'product_image' => 'images/seed/mic.jpg',
                 'condition' => 'used_good',
-                'user_id' => 6,
+                'user_id' => $userIds[5],
                 'category' => json_encode(['家電'])
             ],
             [
@@ -75,7 +79,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => 'おしゃれなショルダーバック',
                 'product_image' => 'images/seed/bag.jpg',
                 'condition' => 'used_acceptable',
-                'user_id' => 7,
+                'user_id' => $userIds[6],
                 'category' => json_encode(['レディース', 'ファッション'])
             ],
             [
@@ -84,7 +88,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => '使いやすいタンブラー',
                 'product_image' => 'images/seed/tumbler.jpg',
                 'condition' => 'used_poor',
-                'user_id' => 8,
+                'user_id' => $userIds[7],
                 'category' => json_encode(['キッチン'])
             ],
             [
@@ -93,7 +97,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => '手動のコーヒーミル',
                 'product_image' => 'images/seed/coffee.jpg',
                 'condition' => 'brand_new',
-                'user_id' => 9,
+                'user_id' => $userIds[8],
                 'category' => json_encode(['キッチン'])
             ],
             [
@@ -102,7 +106,7 @@ class ExhibitionTableSeeder extends Seeder
                 'detail' => '便利なメイクアップセット',
                 'product_image' => 'images/seed/makeup.jpg',
                 'condition' => 'used_like_new',
-                'user_id' => 10,
+                'user_id' => $userIds[9],
                 'category' => json_encode(['レディース', 'コスメ'])
             ]
         ];
