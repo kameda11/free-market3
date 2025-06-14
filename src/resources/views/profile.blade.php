@@ -35,7 +35,7 @@
     <div class="profile__tab-content">
         @forelse ($exhibitions as $exhibition)
         <div class="l-wrapper">
-        <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
+            <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
                 <article class="card">
                     <figure class="card__thumbnail">
                         <img src="{{ asset('storage/' . $exhibition->product_image) }}" alt="image" class="card__image">
@@ -46,7 +46,7 @@
                     <h3 class="card__title">{{ $exhibition->name }}</h3>
                 </article>
             </a>
-            </div>
+        </div>
         @empty
         <p>出品商品はありません。</p>
         @endforelse
@@ -57,7 +57,7 @@
     <div class="profile__tab-content">
         @forelse ($purchases as $exhibition)
         <div class="l-wrapper">
-        <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
+            <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
                 <article class="card">
                     <figure class="card__thumbnail">
                         <img src="{{ asset('storage/' . $exhibition->product_image) }}" alt="image" class="card__image">
@@ -65,7 +65,7 @@
                     <h3 class="card__title">{{ $exhibition->name }}</h3>
                 </article>
             </a>
-            </div>
+        </div>
         @empty
         <p>購入商品はありません。</p>
         @endforelse

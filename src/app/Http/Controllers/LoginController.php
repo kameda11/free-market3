@@ -11,6 +11,32 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        // バリデーション
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        // ユーザー作成
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user)); // 認証メール送信
+        Auth::login($user); // 自動ログイン
+
+        return redirect()->route('verification.notice'); // 認証ページへリダイレクト
+    }
+    
     public function login(Request $request)
     {
         // バリデーション
@@ -38,31 +64,5 @@ class LoginController extends Controller
         return back()->withErrors([
             'email' => 'ログイン情報が登録されていません',
         ]);
-    }
-
-    public function showRegisterForm()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        // バリデーション
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-        // ユーザー作成
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user)); // 認証メール送信
-        Auth::login($user); // 自動ログイン
-
-        return redirect()->route('verification.notice'); // 認証ページへリダイレクト
     }
 }

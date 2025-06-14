@@ -44,11 +44,13 @@
                     @endif
                 </div>
                 @if($address)
-                <p>〒 {{ $address->post_code }}</p>
-                <p>{{ $address->address }}</p>
-                @if($address->building)
-                <p>{{ $address->building }}</p>
-                @endif
+                <div class="address-details">
+                    <p>〒{{ $address->post_code }}</p>
+                    <p>{{ $address->address }}</p>
+                    @if($address->building)
+                    <p>{{ $address->building }}</p>
+                    @endif
+                </div>
                 @else
                 <p>住所が登録されていません。</p>
                 <a href="{{ route('purchase.address', ['item_id' => $exhibition->id]) }}">住所を登録する</a>

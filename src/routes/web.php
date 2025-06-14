@@ -43,6 +43,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/favorites/toggle', [ItemController::class, 'toggle'])->name('favorites.toggle');
     Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/exhibition/create', [ItemController::class, 'create'])->name('exhibition.create');
+    Route::post('/exhibition/store', [ItemController::class, 'store'])->name('exhibition.store');
 });
 
 // 認証ページ（表示用）
@@ -62,7 +64,6 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', '認証メールを再送しました。');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-//Route::get('/purchase/address/{item_id}', [UserController::class, 'address'])->middleware('verified')->name('address');
 Route::get('/purchase/address/{item_id}', [UserController::class, 'purchaseAddress'])->middleware(['auth', 'verified'])->name('purchase.address');
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');

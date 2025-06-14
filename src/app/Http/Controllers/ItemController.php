@@ -79,30 +79,34 @@ class ItemController extends Controller
 
     public function store(ExhibitionRequest $request)
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
 
-        // 画像処理
-        $path = $request->hasFile('product_image')
-            ? $request->file('product_image')->store('products', 'public')
-            : 'products/default.jpg';
+            // 画像処理
+            $path = $request->hasFile('product_image')
+                ? $request->file('product_image')->store('products', 'public')
+                : 'products/default.jpg';
 
-        // カテゴリーをJSONとして保存（ここがポイント）
-        $categories = json_encode($validated['category']);
+            // カテゴリーをJSONとして保存
+            $categories = json_encode($validated['category']);
 
-        $data = [
-            'name' => $validated['name'],
-            'brand' => $validated['brand'] ?? null,
-            'detail' => $validated['detail'],
-            'category' => $categories, // ← JSON文字列
-            'condition' => $validated['condition'],
-            'price' => $validated['price'],
-            'user_id' => auth()->id(),
-            'product_image' => $path,
-        ];
+            $data = [
+                'name' => $validated['name'],
+                'brand' => $validated['brand'] ?? null,
+                'detail' => $validated['detail'],
+                'category' => $categories,
+                'condition' => $validated['condition'],
+                'price' => $validated['price'],
+                'user_id' => auth()->id(),
+                'product_image' => $path,
+            ];
 
-        Exhibition::create($data);
+            Exhibition::create($data);
 
-        return redirect()->route('index')->with('success', '商品を出品しました！');
+            return redirect('/')->with('success', '商品を出品しました！');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '商品の出品に失敗しました。');
+        }
     }
 
     public function __construct()
@@ -241,7 +245,8 @@ class ItemController extends Controller
         $quantity = 1;
         $user = auth()->user();
 
-        $address = $user->address;
+
+        $address = Address::where('user_id', $user->id)->first();
 
         return view('purchase', compact('exhibition', 'quantity', 'address'));
     }

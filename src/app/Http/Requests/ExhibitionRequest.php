@@ -28,12 +28,17 @@ class ExhibitionRequest extends FormRequest
             'detail' => 'required|string|max:255',
             'category' => 'required|array|min:1',
             'product_image' => 'required|image|mimes:jpeg,png|max:2048',
-            'condition' => 'required|string|in:new,used_like_new,used_good,used_fair,used_poor',
+            'condition' => 'required|string|in:brand_new,used_like_new,used_good,used_fair,used_poor',
             'price' => 'required|integer|min:0',
             'brand' => 'nullable|string|max:255',
         ];
     }
 
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
@@ -46,6 +51,7 @@ class ExhibitionRequest extends FormRequest
             'product_image.mimes' => '画像はjpeg、png形式のみアップロード可能です。',
             'product_image.max' => '画像サイズは2MB以下にしてください。',
             'condition.required' => '商品の状態を選択してください。',
+            'condition.in' => '無効な商品状態が選択されています。',
             'price.required' => '価格を入力してください。',
             'price.integer' => '価格は整数で入力してください。',
             'price.min' => '価格は0以上で入力してください。',

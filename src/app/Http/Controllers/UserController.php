@@ -83,7 +83,6 @@ class UserController extends Controller
         // 住所情報の更新
         $address = $user->address ?? new Address();
         $address->user_id = $user->id;
-        $address->name = $user->name;
         $address->post_code = $request->post_code;
         $address->address = $request->address;
         $address->building = $request->building;
@@ -95,7 +94,7 @@ class UserController extends Controller
     public function addresses()
     {
         $user = auth()->user();
-        $address = $user->address ?? new Address(); // 住所が存在しない場合は新しいAddressインスタンスを作成
+        $address = $user->address ?? new Address(); // 住所が存在しない場合は新しいUserAddressインスタンスを作成
         return view('address', compact('user', 'address'));
     }
 
@@ -113,7 +112,7 @@ class UserController extends Controller
 
         // 住所の更新
         $address->user_id = $user->id;
-        $address->name = $user->name;
+        $address->name = $user->name;  // ユーザー名を設定
         $address->post_code = $request->post_code;
         $address->address = $request->address;
         $address->building = $request->building;

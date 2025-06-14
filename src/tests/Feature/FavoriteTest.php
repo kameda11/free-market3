@@ -214,3 +214,4 @@ class FavoriteTest extends TestCase
             ->assertDontSee('fas fa-star');
     }
 }
+ 
