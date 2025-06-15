@@ -29,6 +29,7 @@
 </div>
 
 <div id="favorites" class="content-section products-container">
+    @auth
     @forelse($favoriteExhibitions as $exhibition)
     <div class="l-wrapper">
         <a href="{{ route('detail', $exhibition->id) }}" class="card__button card__button--compact">
@@ -48,6 +49,7 @@
         お気に入り登録している商品はありません。
     </div>
     @endforelse
+    @endauth
 </div>
 @endsection
 

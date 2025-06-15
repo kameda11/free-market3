@@ -89,7 +89,7 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_resets',
+            'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],
@@ -107,5 +107,9 @@ return [
     */
 
     'password_timeout' => 10800,
+
+    'verification' => [
+        'expire' => 60, // メール認証の有効期限（分）
+    ],
 
 ];

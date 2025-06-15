@@ -29,6 +29,7 @@ Route::post('/register', [LoginController::class, 'register'])->name('register')
 
 // 認証済みユーザーのみアクセス可能なルート
 Route::middleware(['auth'])->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('/cart/add', [ItemController::class, 'add'])->name('cart.add');
     Route::get('/cart', [ItemController::class, 'index'])->name('cart.index');
     Route::get('/address', [UserController::class, 'address']);
@@ -48,21 +49,19 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // 認証ページ（表示用）
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify', [LoginController::class, 'showVerificationNotice'])
+    ->middleware('auth')
+    ->name('verification.notice');
 
 // 認証リンククリック後（自動で処理）
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect()->route('profile.edit')->with('success', 'メール認証が完了しました！');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [LoginController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
 
 // 再送信処理
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', '認証メールを再送しました。');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::post('/email/verification-notification', [LoginController::class, 'resendVerificationEmail'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
 
 Route::get('/purchase/address/{item_id}', [UserController::class, 'purchaseAddress'])->middleware(['auth', 'verified'])->name('purchase.address');
 

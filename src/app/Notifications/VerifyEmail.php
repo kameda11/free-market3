@@ -2,36 +2,40 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-class VerifyEmail extends Notification implements ShouldQueue
+class VerifyEmail extends BaseVerifyEmail
 {
-    use Queueable;
-
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
+    /**
+     * メールメッセージを構築
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toMail($notifiable)
     {
         $verificationUrl = $this->verificationUrl($notifiable);
 
         return (new MailMessage)
-            ->subject(Lang::get('メール認証のお願い'))
-            ->markdown('emails.verify-email', ['verificationUrl' => $verificationUrl]);
+            ->subject('メール認証のお願い')
+            ->view('emails.verify-email', ['verificationUrl' => $verificationUrl]);
     }
 
+    /**
+     * 認証URLを生成
+     *
+     * @param  mixed  $notifiable
+     * @return string
+     */
     protected function verificationUrl($notifiable)
     {
         return URL::temporarySignedRoute(
             'verification.verify',
-            now()->addMinutes(60),
+            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
             [
                 'id' => $notifiable->getKey(),
                 'hash' => sha1($notifiable->getEmailForVerification()),

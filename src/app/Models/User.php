@@ -43,6 +43,22 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * メール認証通知を送信
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\VerifyEmail);
+    }
+
+    /**
+     * モデルを最新の状態に更新
+     */
+    public function refresh()
+    {
+        return $this->fresh();
+    }
+
     public function address()
     {
         return $this->hasOne(Address::class);
@@ -83,10 +99,5 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->forceFill([
             'email_verified_at' => $this->freshTimestamp(),
         ])->save();
-    }
-
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new VerifyEmail);
     }
 }

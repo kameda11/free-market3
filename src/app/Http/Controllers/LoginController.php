@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class LoginController extends Controller
 {
@@ -24,6 +25,7 @@ class LoginController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
+
         // ユーザー作成
         $user = User::create([
             'name' => $request->name,
@@ -31,12 +33,15 @@ class LoginController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user)); // 認証メール送信
-        Auth::login($user); // 自動ログイン
+        // ユーザーをログイン状態にする
+        Auth::login($user);
 
-        return redirect()->route('verification.notice'); // 認証ページへリダイレクト
+        // Registeredイベントを発火（認証メール送信）
+        event(new Registered($user));
+
+        return redirect()->route('verification.notice');
     }
-    
+
     public function login(Request $request)
     {
         // バリデーション
@@ -58,11 +63,48 @@ class LoginController extends Controller
             }
 
             // ログイン後、index.blade.phpにリダイレクト
-            return redirect()->route('index');  // 'index' はweb.phpで定義した名前付きルート
+            return redirect()->route('index');
         }
 
         return back()->withErrors([
             'email' => 'ログイン情報が登録されていません',
         ]);
+    }
+
+    /**
+     * ログアウト処理
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('index');
+    }
+
+    /**
+     * メール認証ページを表示
+     */
+    public function showVerificationNotice()
+    {
+        return view('auth.verify-email');
+    }
+
+    /**
+     * メール認証を実行
+     */
+    public function verify(EmailVerificationRequest $request)
+    {
+        $request->fulfill();
+        return redirect()->route('profile.edit')->with('success', 'メール認証が完了しました！');
+    }
+
+    /**
+     * 認証メールを再送信
+     */
+    public function resendVerificationEmail(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('status', '認証メールを再送信しました。');
     }
 }

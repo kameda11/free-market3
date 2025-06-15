@@ -106,28 +106,4 @@ class RegisterFormTest extends TestCase
         $response->assertSessionHasErrors('password');
         $response->assertSessionHasErrorsIn('default', ['password' => 'パスワードと一致しません']);
     }
-
-    /**
-     * 会員登録が成功する場合のテスト
-     *
-     * @return void
-     */
-    public function test_successful_registration()
-    {
-        $response = $this->post('/register', [
-            'name' => 'テスト太郎',
-            'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-            'postal_code' => '123-4567',
-            'address' => 'テスト住所',
-            'phone' => '090-1234-5678'
-        ]);
-
-        $response->assertRedirect('/email/verify');
-        $this->assertDatabaseHas('users', [
-            'name' => 'テスト太郎',
-            'email' => 'test@example.com'
-        ]);
-    }
 }

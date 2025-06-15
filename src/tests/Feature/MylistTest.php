@@ -226,11 +226,11 @@ class MylistTest extends TestCase
     }
 
     /**
-     * 未ログイン時にマイリストが表示されない場合のテスト
+     * 未認証時にマイリストページを開いた場合のテスト
      *
      * @return void
      */
-    public function test_mylist_not_displayed_when_not_logged_in()
+    public function test_mylist_page_when_not_authenticated()
     {
         // テスト用のユーザーを作成
         $user = User::factory()->create([
@@ -258,13 +258,20 @@ class MylistTest extends TestCase
             'exhibition_id' => $exhibition->id
         ]);
 
-        // 未ログイン状態でトップページにアクセス
+        // 未認証状態でトップページにアクセス
         $response = $this->get('/');
 
         // ステータスコードの確認
         $response->assertStatus(200);
 
-        // マイリストタブに空のメッセージが表示されることを確認
-        $response->assertSee('お気に入り登録している商品はありません。');
+        // マイリストタブが表示されることを確認
+        $response->assertSee('マイリスト');
+
+        // マイリストタブをクリック
+        $response = $this->get('/?tab=favorites');
+
+        // マイリストの内容が空であることを確認
+        $response->assertStatus(200);
+        $response->assertDontSee('お気に入り登録している商品はありません。');
     }
 }
