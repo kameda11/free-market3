@@ -14,9 +14,9 @@
 3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
 
 4. .envのメール設定を変更する
-###メール設定
-### Mailtrapの認証情報を設定してください
-### https://mailtrap.io でアカウントを作成し、認証情報を取得できます
+###メール設定</br>
+・Mailtrapの認証情報を設定してください</br>
+・https://mailtrap.io でアカウントを作成し、認証情報を取得できます</br>
 ``` text
 MAIL_MAILER=smtp
 MAIL_HOST=sandbox.smtp.mailtrap.io
