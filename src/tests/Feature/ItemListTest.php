@@ -3,32 +3,23 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Exhibition;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class ItemListTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 商品一覧が正しく表示される場合のテスト
-     *
-     * @return void
-     */
     public function test_item_list_display()
     {
-        // テスト用のユーザーを作成
         $user = User::factory()->create([
             'email' => 'test@example.com',
             'password' => bcrypt('password123'),
             'email_verified_at' => now()
         ]);
 
-        // テスト用の商品を作成
         $items = [
             [
                 'name' => 'テスト商品1',
@@ -54,32 +45,22 @@ class ItemListTest extends TestCase
             Exhibition::create($item);
         }
 
-        // 商品一覧ページにアクセス
         $response = $this->get('/');
 
-        // ステータスコードの確認
         $response->assertStatus(200);
 
-        // 商品が表示されていることを確認
         $response->assertSee('テスト商品1');
         $response->assertSee('テスト商品2');
     }
 
-    /**
-     * 購入済み商品にSoldラベルが表示される場合のテスト
-     *
-     * @return void
-     */
     public function test_sold_item_display()
     {
-        // テスト用のユーザーを作成
         $user = User::factory()->create([
             'email' => 'test@example.com',
             'password' => bcrypt('password123'),
             'email_verified_at' => now()
         ]);
 
-        // テスト用の商品を作成
         $items = [
             [
                 'name' => '販売中商品',
@@ -107,28 +88,18 @@ class ItemListTest extends TestCase
             Exhibition::create($item);
         }
 
-        // 商品一覧ページにアクセス
         $response = $this->get('/');
 
-        // ステータスコードの確認
         $response->assertStatus(200);
 
-        // 商品が表示されていることを確認
         $response->assertSee('販売中商品');
         $response->assertSee('購入済み商品');
 
-        // Soldラベルの表示を確認
         $response->assertSee('Sold');
     }
 
-    /**
-     * 自分が出品した商品は表示されない場合のテスト
-     *
-     * @return void
-     */
     public function test_own_items_not_displayed()
     {
-        // テスト用のユーザーを作成
         /** @var Authenticatable $user */
         $user = User::factory()->create([
             'email' => 'test@example.com',
@@ -136,14 +107,12 @@ class ItemListTest extends TestCase
             'email_verified_at' => now()
         ]);
 
-        // 他のユーザーを作成
         $otherUser = User::factory()->create([
             'email' => 'other@example.com',
             'password' => bcrypt('password123'),
             'email_verified_at' => now()
         ]);
 
-        // テスト用の商品を作成
         $items = [
             [
                 'name' => '自分の出品商品',
@@ -169,19 +138,14 @@ class ItemListTest extends TestCase
             Exhibition::create($item);
         }
 
-        // ユーザーとしてログイン
         $this->actingAs($user);
 
-        // トップページにアクセス
         $response = $this->get('/');
 
-        // ステータスコードの確認
         $response->assertStatus(200);
 
-        // 自分の出品商品が表示されないことを確認
         $response->assertDontSee('自分の出品商品');
 
-        // 他のユーザーの出品商品が表示されることを確認
         $response->assertSee('他のユーザーの出品商品');
     }
 }

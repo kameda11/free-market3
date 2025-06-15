@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class RegisterFormTest extends TestCase
@@ -25,11 +24,6 @@ class RegisterFormTest extends TestCase
         $response->assertSessionHasErrorsIn('default', ['name' => 'お名前を入力してください']);
     }
 
-    /**
-     * メールアドレスが未入力の場合のバリデーションテスト
-     *
-     * @return void
-     */
     public function test_email_validation()
     {
         $response = $this->post('/register', [
@@ -45,11 +39,6 @@ class RegisterFormTest extends TestCase
         $response->assertSessionHasErrorsIn('default', ['email' => 'メールアドレスを入力してください']);
     }
 
-    /**
-     * パスワードが未入力の場合のバリデーションテスト
-     *
-     * @return void
-     */
     public function test_password_validation()
     {
         $response = $this->post('/register', [
@@ -65,11 +54,6 @@ class RegisterFormTest extends TestCase
         $response->assertSessionHasErrorsIn('default', ['password' => 'パスワードを入力してください']);
     }
 
-    /**
-     * パスワードが7文字以下の場合のバリデーションテスト
-     *
-     * @return void
-     */
     public function test_password_length_validation()
     {
         $response = $this->post('/register', [
@@ -86,11 +70,6 @@ class RegisterFormTest extends TestCase
         $response->assertSessionHasErrorsIn('default', ['password' => 'パスワードは8文字以上で入力してください']);
     }
 
-    /**
-     * パスワードとパスワード確認が一致しない場合のバリデーションテスト
-     *
-     * @return void
-     */
     public function test_password_confirmation_validation()
     {
         $response = $this->post('/register', [

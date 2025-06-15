@@ -32,9 +32,15 @@
 
         <div class="icon-group">
             <div class="icon-block">
+                @auth
                 <button class="favorite-button" data-id="{{ $exhibition->id }}">
                     <i class="{{ $isFavorited ? 'fas' : 'far' }} fa-star"></i>
                 </button>
+                @else
+                <a href="{{ route('login') }}" class="favorite-button">
+                    <i class="far fa-star"></i>
+                </a>
+                @endauth
                 <span class="favorite-count">{{ $exhibition->favorites->count() }}</span>
             </div>
             <div class="icon-block">
@@ -133,36 +139,53 @@
     document.addEventListener('DOMContentLoaded', () => {
         // お気に入りボタンの処理
         document.querySelectorAll('.favorite-button').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', async function() {
                 const exhibitionId = this.dataset.id;
                 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const icon = this.querySelector('i');
+                const countSpan = this.closest('.icon-block').querySelector('.favorite-count');
 
-                fetch('/favorites/toggle', {
+                try {
+                    const response = await fetch('/favorites/toggle', {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': token,
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
                         },
+                        credentials: 'same-origin',
                         body: JSON.stringify({
                             exhibition_id: exhibitionId
                         })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const icon = this.querySelector('i');
-                        const countSpan = this.closest('.icon-block').querySelector('.favorite-count');
+                    });
 
-                        if (data.status === 'added') {
-                            icon.classList.remove('far');
-                            icon.classList.add('fas');
-                        } else if (data.status === 'removed') {
-                            icon.classList.remove('fas');
-                            icon.classList.add('far');
-                        }
+                    if (response.status === 401) {
+                        // 未ログインの場合、ログインページにリダイレクト
+                        window.location.href = '/login';
+                        return;
+                    }
 
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.status === 'added') {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else if (data.status === 'removed') {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+
+                    if (data.count !== undefined) {
                         countSpan.textContent = data.count;
-                    })
-                    .catch(error => console.error('通信エラー:', error));
+                    }
+                } catch (error) {
+                    console.error('通信エラー:', error);
+                }
             });
         });
 

@@ -83,6 +83,7 @@ class UserController extends Controller
         // 住所情報の更新
         $address = $user->address ?? new Address();
         $address->user_id = $user->id;
+        $address->name = $user->name;
         $address->post_code = $request->post_code;
         $address->address = $request->address;
         $address->building = $request->building;

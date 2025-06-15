@@ -22,14 +22,6 @@ class EmailVerificationTest extends TestCase
         Notification::fake();
     }
 
-    /**
-     * 会員登録とメール認証のテスト
-     * 1. 会員登録をする
-     * 2. 認証メールを送信する
-     * 期待挙動: 登録したメールアドレス宛に認証メールが送信されている
-     *
-     * @return void
-     */
     public function test_registration_and_email_verification()
     {
         $userData = [
@@ -44,7 +36,7 @@ class EmailVerificationTest extends TestCase
         $response->assertRedirect('/email/verify');
         $this->assertAuthenticated();
 
-        /** @phpstan-ignore-next-line */
+        /** @var Authenticatable|User $user */
         $user = User::where('email', 'test@example.com')->first();
         $this->assertNotNull($user);
         $this->assertFalse($user->hasVerifiedEmail());
@@ -55,18 +47,9 @@ class EmailVerificationTest extends TestCase
         );
     }
 
-    /**
-     * メール認証導線のテスト
-     * 1. メール認証導線画面を表示する
-     * 2. 「認証はこちらから」ボタンを押下
-     * 3. メール認証サイトを表示する
-     * 期待挙動: メール認証サイトに遷移する
-     *
-     * @return void
-     */
     public function test_email_verification_flow()
     {
-        /** @phpstan-ignore-next-line */
+        /** @var Authenticatable|User $user */
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
@@ -77,7 +60,6 @@ class EmailVerificationTest extends TestCase
         $response->assertStatus(200)
             ->assertViewIs('auth.verify-email');
 
-        // 認証メールの再送信をリクエスト
         $response = $this->post('/email/verification-notification');
         $response->assertRedirect()
             ->assertSessionHas('status', '認証メールを再送信しました。');
@@ -103,24 +85,14 @@ class EmailVerificationTest extends TestCase
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
     }
 
-    /**
-     * メール認証完了後の商品一覧画面遷移のテスト
-     * 1. メール認証を完了する
-     * 2. 商品一覧画面を表示する
-     * 期待挙動: 商品一覧画面に遷移する
-     *
-     * @return void
-     */
     public function test_verification_completion_and_item_list_redirect()
     {
-        // 未認証ユーザーを作成
-        /** @var Authenticatable $user */
+        /** @var Authenticatable|User $user */
         $user = User::factory()->create([
             'email_verified_at' => null,
             'password' => Hash::make('password123')
         ]);
 
-        // 1. メール認証を完了
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
@@ -129,18 +101,14 @@ class EmailVerificationTest extends TestCase
 
         $response = $this->actingAs($user)->get($verificationUrl);
 
-        // 認証完了の確認
         $response->assertRedirect(route('profile.edit'))
             ->assertSessionHas('success', 'メール認証が完了しました！');
 
-        // ユーザーの認証状態を確認
         $user = User::find($user->id);
         $this->assertNotNull($user->email_verified_at);
 
-        // 2. 商品一覧画面を表示
         $response = $this->actingAs($user)->get(route('index'));
 
-        // 商品一覧画面への遷移を確認
         $response->assertStatus(200)
             ->assertViewIs('index')
             ->assertSee('おすすめ')
