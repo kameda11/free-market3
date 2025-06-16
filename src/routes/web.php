@@ -1,12 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LoginController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StripeController;
 
@@ -46,22 +43,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::get('/exhibition/create', [ItemController::class, 'create'])->name('exhibition.create');
     Route::post('/exhibition/store', [ItemController::class, 'store'])->name('exhibition.store');
+    Route::get('/email/verify', [LoginController::class, 'showVerificationNotice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [LoginController::class, 'verify'])
+        ->middleware(['signed'])
+        ->name('verification.verify');
+    Route::post('/email/verification-notification', [LoginController::class, 'resendVerificationEmail'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.send');
 });
-
-// 認証ページ（表示用）
-Route::get('/email/verify', [LoginController::class, 'showVerificationNotice'])
-    ->middleware('auth')
-    ->name('verification.notice');
-
-// 認証リンククリック後（自動で処理）
-Route::get('/email/verify/{id}/{hash}', [LoginController::class, 'verify'])
-    ->middleware(['auth', 'signed'])
-    ->name('verification.verify');
-
-// 再送信処理
-Route::post('/email/verification-notification', [LoginController::class, 'resendVerificationEmail'])
-    ->middleware(['auth', 'throttle:6,1'])
-    ->name('verification.send');
 
 Route::get('/purchase/address/{item_id}', [UserController::class, 'purchaseAddress'])->middleware(['auth', 'verified'])->name('purchase.address');
 
