@@ -59,4 +59,3 @@ Route::post('/store-tab', [SearchController::class, 'storeTab'])->name('store.ta
 
 Route::post('/stripe/create-checkout-session', [StripeController::class, 'createCheckoutSession'])->name('stripe.checkout');
 Route::get('/purchase/success', [StripeController::class, 'success'])->name('purchase.success');
-Route::get('/purchase/cancel', [StripeController::class, 'cancel'])->name('purchase.cancel');

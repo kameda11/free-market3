@@ -63,11 +63,11 @@
             <label for="condition" class="form-label__category">商品の状態</label>
             <div class="select-wrapper">
                 <select name="condition" id="condition" class="form-input">
-                    <option value="" selected disabled hidden>選択してください</option>
-                    <option value="used_like_new">良好</option>
-                    <option value="used_good">目立った傷や汚れなし</option>
-                    <option value="used_fair">やや傷や汚れあり</option>
-                    <option value="used_poor">状態が悪い</option>
+                    <option value="" {{ old('condition') ? '' : 'selected' }} disabled hidden>選択してください</option>
+                    <option value="used_like_new" {{ old('condition') == 'used_like_new' ? 'selected' : '' }}>良好</option>
+                    <option value="used_good" {{ old('condition') == 'used_good' ? 'selected' : '' }}>目立った傷や汚れなし</option>
+                    <option value="used_fair" {{ old('condition') == 'used_fair' ? 'selected' : '' }}>やや傷や汚れあり</option>
+                    <option value="used_poor" {{ old('condition') == 'used_poor' ? 'selected' : '' }}>状態が悪い</option>
                 </select>
             </div>
             @error('condition')
@@ -134,7 +134,7 @@
         // 選択表示用の要素を作成
         const selectSelected = document.createElement('div');
         selectSelected.className = 'select-selected';
-        selectSelected.textContent = '選択してください';
+        selectSelected.textContent = customSelect.options[customSelect.selectedIndex].text;
 
         // ドロップダウン用の要素を作成
         const selectItems = document.createElement('div');
@@ -193,8 +193,9 @@
                     const originalText = option.text.replace('✔', '').replace('　', '');
                     if (option.selected) {
                         option.text = '✔' + originalText;
-                        selectItemsDivs[i - 1].textContent = '✔' + originalText; // i-1 because we skip the empty option
+                        selectItemsDivs[i - 1].textContent = '✔' + originalText;
                         selectItemsDivs[i - 1].classList.add('selected');
+                        selectSelected.textContent = '✔' + originalText;
                     } else {
                         option.text = '　' + originalText;
                         selectItemsDivs[i - 1].textContent = '　' + originalText;
@@ -203,6 +204,9 @@
                 }
             }
         }
+
+        // 初期表示時に選択状態を更新
+        updateOptionStyles();
 
         // 画像プレビュー機能
         const imageInput = document.querySelector('.image-input');

@@ -26,6 +26,13 @@ MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="your-email@example.com"
 MAIL_FROM_NAME="${APP_NAME}"
 ```
+・StripeのAPIキーを設定してください</br>
+・https://dashboard.stripe.com/test/apikeys にアクセスし、公開可能キーとシークレットキーを取得して以下を設定してください</br>
+``` text
+STRIPE_KEY=your_publishable_key
+STRIPE_SECRET=your_secret_key
+```
+
 5. アプリケーションキーの作成
 ``` bash
 php artisan key:generate
@@ -39,6 +46,11 @@ php artisan migrate
 7. シーディングの実行
 ``` bash
 php artisan db:seed
+```
+
+8. シンボリックリンクの実行
+``` bash
+php artisan storage:link
 ```
 
 ## 使用技術(実行環境)

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Stripe\Stripe;
-use Stripe\Checkout\Session;
 use App\Models\Exhibition;
-use App\Models\Purchase;
 use Exception;
 
 class StripeController extends Controller
@@ -40,8 +38,7 @@ class StripeController extends Controller
                     'quantity' => 1,
                 ]],
                 'mode' => 'payment',
-                'success_url' => route('purchase.success'),
-                'cancel_url' => route('purchase.cancel'),
+                'success_url' => route('index'),
             ]);
 
             return response()->json(['id' => $session->id]);
@@ -51,17 +48,5 @@ class StripeController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function success(Request $request)
-    {
-        // 購入完了時の処理
-        return view('purchase.success');
-    }
-
-    public function cancel()
-    {
-        // 購入キャンセル時の処理
-        return view('purchase.cancel');
     }
 }
