@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\Exhibition;
 use App\Models\Address;
 use App\Models\Profile;
-use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\EditRequest;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +16,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Exhibitionモデルからすべての出品データを取得
         $exhibitions = Exhibition::all();
 
-        // ビューに渡す
         return view('index', compact('exhibitions'));
     }
 
@@ -30,10 +27,8 @@ class UserController extends Controller
         $user = User::with(['exhibitions', 'purchases.exhibition', 'address'])->find($user->id);
         $address = $user->address;
 
-        // 出品した商品を取得（自分の出品のみ）
         $exhibitions = $user->exhibitions()->where('user_id', $user->id)->get();
 
-        // 購入した商品を取得
         $purchases = $user->purchases->map(function ($purchase) {
             return $purchase->exhibition;
         });
@@ -53,16 +48,13 @@ class UserController extends Controller
         $user = Auth::user();
 
         if ($request->hasFile('profile_image')) {
-            // 古い画像の削除
             if ($user->profile && $user->profile->profile_image) {
                 Storage::delete('public/' . $user->profile->profile_image);
             }
 
-            // 新しい画像の保存
             $imageName = time() . '.' . $request->profile_image->extension();
             $path = $request->profile_image->storeAs('public/profiles', $imageName);
 
-            // プロフィール情報の更新または作成
             if (!$user->profile) {
                 Profile::create([
                     'user_id' => $user->id,
@@ -75,12 +67,10 @@ class UserController extends Controller
             }
         }
 
-        // ユーザー情報の更新
         User::where('id', $user->id)->update([
             'name' => $request->name
         ]);
 
-        // 住所情報の更新
         $address = $user->address ?? new Address();
         $address->user_id = $user->id;
         $address->name = $user->name;
@@ -95,7 +85,7 @@ class UserController extends Controller
     public function addresses()
     {
         $user = auth()->user();
-        $address = $user->address ?? new Address(); // 住所が存在しない場合は新しいUserAddressインスタンスを作成
+        $address = $user->address ?? new Address();
         return view('address', compact('user', 'address'));
     }
 
@@ -111,24 +101,21 @@ class UserController extends Controller
         $user = auth()->user();
         $address = $user->address ?? new Address();
 
-        // 住所の更新
         $address->user_id = $user->id;
-        $address->name = $user->name;  // ユーザー名を設定
+        $address->name = $user->name;
         $address->post_code = $request->post_code;
         $address->address = $request->address;
         $address->building = $request->building;
         $address->save();
 
-        // 商品IDがある場合は購入画面にリダイレクト
         if ($request->has('item_id')) {
             return redirect()->route('purchase', [
                 'exhibition_id' => $request->item_id
             ])->with('success', '住所を更新しました');
         }
 
-        // 商品IDがない場合は購入画面にリダイレクト
         return redirect()->route('purchase', [
-            'exhibition_id' => 1  // デフォルトの商品ID
+            'exhibition_id' => 1
         ])->with('success', '住所を更新しました');
     }
 

@@ -12,7 +12,6 @@ use App\Models\Comment;
 use App\Http\Requests\ExhibitionRequest;
 use App\Http\Requests\CommentRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
@@ -20,18 +19,12 @@ class ItemController extends Controller
     {
         $itemId = $request->input('item_id');
         $quantity = $request->input('quantity', 1);
-
-        // 商品情報を取得
         $item = Exhibition::findOrFail($itemId);
-
-        // セッションからカートを取得（なければ空の配列）
         $cart = session()->get('cart', []);
 
-        // すでにカートにある場合は数量を追加
         if (isset($cart[$itemId])) {
             $cart[$itemId]['quantity'] += $quantity;
         } else {
-            // カートに追加
             $cart[$itemId] = [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -41,26 +34,22 @@ class ItemController extends Controller
             ];
         }
 
-        // カートをセッションに保存
         session(['cart' => $cart]);
-
         return redirect()->back()->with('success', 'カートに追加しました。');
     }
 
     public function index()
     {
         $userId = Auth::id();
-        $allExhibitions = Exhibition::query();  // すべての商品を取得
+        $allExhibitions = Exhibition::query();
 
-        // ログインしている場合のみ、自分の出品を除外
         if ($userId) {
             $allExhibitions = $allExhibitions->where('user_id', '!=', $userId);
         }
 
         $allExhibitions = $allExhibitions->get();
-
-        // お気に入り商品の取得（ログインしている場合のみ）
         $favoriteExhibitions = collect();
+
         if ($userId) {
             $favoriteExhibitions = Exhibition::join('favorites', 'exhibitions.id', '=', 'favorites.exhibition_id')
                 ->where('favorites.user_id', $userId)
@@ -81,13 +70,9 @@ class ItemController extends Controller
     {
         try {
             $validated = $request->validated();
-
-            // 画像処理
             $path = $request->hasFile('product_image')
                 ? $request->file('product_image')->store('products', 'public')
                 : 'products/default.jpg';
-
-            // カテゴリーをJSONとして保存
             $categories = json_encode($validated['category']);
 
             $data = [
@@ -102,7 +87,6 @@ class ItemController extends Controller
             ];
 
             Exhibition::create($data);
-
             return redirect('/')->with('success', '商品を出品しました！');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', '商品の出品に失敗しました。');
@@ -127,7 +111,6 @@ class ItemController extends Controller
     {
         try {
             $validated = $request->validated();
-
             Comment::create([
                 'user_id' => Auth::id(),
                 'exhibition_id' => $validated['exhibition_id'],
@@ -159,7 +142,6 @@ class ItemController extends Controller
 
     public function storeFavorite(Request $request)
     {
-        // 認証ユーザー前提の場合
         $request->validate([
             'exhibition_id' => 'required|exists:exhibitions,id',
         ]);
@@ -180,7 +162,6 @@ class ItemController extends Controller
 
         $exhibitionId = $request->input('exhibition_id');
         $user = $request->user();
-
         $favorite = Favorite::where('user_id', $user->id)
             ->where('exhibition_id', $exhibitionId)
             ->first();
@@ -212,7 +193,6 @@ class ItemController extends Controller
             $quantity = $request->input('quantity');
             $addressId = $request->input('address_id');
             $paymentMethod = $request->input('payment_method');
-
             $exhibition = Exhibition::findOrFail($exhibitionId);
 
             if ($exhibition->sold) {
@@ -234,7 +214,6 @@ class ItemController extends Controller
             return redirect()->route('detail', ['item_id' => $exhibitionId])
                 ->with('success', '購入が完了しました！');
         } catch (\Exception $e) {
-            Log::error('Purchase error: ' . $e->getMessage());
             return redirect()->back()->with('error', '購入処理中にエラーが発生しました。');
         }
     }
@@ -244,8 +223,6 @@ class ItemController extends Controller
         $exhibition = Exhibition::findOrFail($exhibition_id);
         $quantity = 1;
         $user = auth()->user();
-
-
         $address = Address::where('user_id', $user->id)->first();
 
         return view('purchase', compact('exhibition', 'quantity', 'address'));

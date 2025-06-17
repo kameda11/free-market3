@@ -24,11 +24,11 @@ class EditRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'post_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
-            'address' => ['required', 'string', 'max:255'],
-            'building' => ['nullable', 'string', 'max:255'],
-            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png', 'max:2048']
+            'name' => 'required|string|max:255',
+            'post_code' => 'required|regex:/^\d{3}-\d{4}$/',
+            'address' => 'required|string|max:255',
+            'building' => 'nullable|string|max:255',
+            'profile_image' => 'nullable|image|mimes:jpeg,png|max:2048'
         ];
     }
 
@@ -36,6 +36,8 @@ class EditRequest extends FormRequest
     {
         return [
             'name.required' => 'お名前は必須です。',
+            'name.string' => 'お名前は文字列で入力してください。',
+            'name.max' => 'お名前は255文字以内で入力してください。',
             'post_code.required' => '郵便番号は必須です。',
             'post_code.regex' => '郵便番号は「123-4567」の形式で入力してください。',
             'address.required' => '住所は必須です。',

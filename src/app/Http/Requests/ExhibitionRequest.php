@@ -54,7 +54,7 @@ class ExhibitionRequest extends FormRequest
             'condition.in' => '無効な商品状態が選択されています。',
             'price.required' => '価格を入力してください。',
             'price.integer' => '価格は整数で入力してください。',
-            'price.min' => '価格は0以上で入力してください。',
+            'price.min' => '価格は0円以上で入力してください。',
             'brand.max' => 'ブランド名は255文字以内で入力してください。',
         ];
     }
