@@ -28,10 +28,10 @@
             <div class="payment-section">
                 <h3 class="section-title">支払い方法</h3>
                 <div class="payment-method">
-                    <select name="payment_method" class="payment-select" required>
+                    <select name="payment_method" id="payment_method" class="payment-select" required>
                         <option value="" selected>選択してください</option>
-                        <option value="1">　コンビニ払い</option>
-                        <option value="2">　カード払い</option>
+                        <option value="1">コンビニ払い</option>
+                        <option value="2">カード払い</option>
                     </select>
                 </div>
             </div>
@@ -108,6 +108,15 @@
         const selectItems = document.createElement('div');
         selectItems.className = 'select-items select-hide';
 
+        // オプションのスタイルを更新する関数
+        function updateOptionStyles() {
+            const options = selectItems.querySelectorAll('div');
+            options.forEach(option => {
+                const originalText = option.textContent.replace('✓', '').replace('　', '');
+                option.textContent = option.classList.contains('selected') ? '✓' + originalText : '　' + originalText;
+            });
+        }
+
         // オプションをコピー（空のオプションを除外）
         Array.from(customSelect.options).forEach(option => {
             if (option.value !== '') { // 空のオプションをスキップ
@@ -127,6 +136,8 @@
                     selectItems.classList.add('select-hide');
                     // 元のselectのchangeイベントを発火
                     customSelect.dispatchEvent(new Event('change'));
+                    // オプションのスタイルを更新
+                    updateOptionStyles();
                 });
                 selectItems.appendChild(div);
             }
@@ -149,6 +160,17 @@
             selectItems.classList.add('select-hide');
         });
 
+        // 支払い方法の選択
+        const paymentMethodInput = document.getElementById('payment_method');
+        const paymentMethodDisplay = document.getElementById('payment-method-display');
+        const purchaseForm = document.getElementById('purchase-form');
+
+        // 支払い方法の変更を監視
+        paymentMethodInput.addEventListener('change', function() {
+            const selectedMethod = this.value;
+            paymentMethodDisplay.textContent = selectedMethod === '2' ? 'カード払い' : 'コンビニ払い';
+        });
+
         // Stripeの初期化
         const stripeKey = "{{ config('services.stripe.key') }}";
         if (!stripeKey) {
@@ -157,53 +179,7 @@
         }
         const stripe = Stripe(stripeKey);
 
-        const paymentMethodInput = document.getElementById('payment_method');
-        const paymentMethodDisplay = document.getElementById('payment-method-display');
-        const purchaseForm = document.getElementById('purchase-form');
-
-        paymentMethodInput.value = '1';
-
-        function updateOptionStyles() {
-            const options = customSelect.options;
-            const selectItemsDivs = selectItems.querySelectorAll('div');
-
-            for (let i = 0; i < options.length; i++) {
-                const option = options[i];
-                if (option.value !== '') { // 空のオプションをスキップ
-                    const originalText = option.text.replace('✔', '').replace('　', '');
-                    if (option.selected) {
-                        const originalText = option.text.replace('✔', '').replace('　', '');
-                        option.text = '✔' + originalText;
-                        selectItemsDivs[i - 1].textContent = '✔' + originalText; // i-1 because we skip the empty option
-                        selectItemsDivs[i - 1].classList.add('selected');
-                    } else {
-                        option.text = '　' + originalText;
-                        selectItemsDivs[i - 1].textContent = '　' + originalText;
-                        selectItemsDivs[i - 1].classList.remove('selected');
-                    }
-                }
-            }
-        }
-
-        // ドロップダウンが閉じた時にチェックマークを削除
-        customSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            if (selectedOption.value !== '') {
-                paymentMethodInput.value = this.value;
-                paymentMethodDisplay.textContent = selectedOption.text.replace('✓', '').replace('　', '');
-                // チェックマークとスペースを削除
-                const options = this.options;
-                const selectItemsDivs = selectItems.querySelectorAll('div');
-
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].value !== '') { // 空のオプションをスキップ
-                        options[i].text = options[i].text.replace('✓', '').replace('　', '');
-                        selectItemsDivs[i - 1].textContent = options[i].text; // i-1 because we skip the empty option
-                    }
-                }
-            }
-        });
-
+        // フォーム送信時の処理
         purchaseForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 

@@ -130,13 +130,14 @@ select.payment-select:focus {
 }
 
 select.payment-select option {
-    padding-left: 2rem;
-    text-align: left;
+    padding-left: 25px;
+    position: relative;
 }
 
-select.payment-select option:checked {
-    background-color: #5599EB;
-    color: #EAEAEA;
+select.payment-select option:checked::before {
+    content: "✔";
+    position: absolute;
+    left: 5px;
 }
 
 .custom-select {
