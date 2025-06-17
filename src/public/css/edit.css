@@ -44,7 +44,6 @@
     width: 100%;
 }
 
-/* エラーメッセージのスタイル */
 .form-group .error {
     color: red;
     font-size: 14px;
@@ -168,7 +167,6 @@
     border: 1px solid #c3e6cb;
 }
 
-/* メディアクエリ - PC (1400-1540px) */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
 
     .address-edit-container,
@@ -205,7 +203,6 @@
     }
 }
 
-/* メディアクエリ - タブレット (768-850px) */
 @media screen and (min-width: 768px) and (max-width: 850px) {
 
     .address-edit-container,

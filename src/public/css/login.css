@@ -68,7 +68,6 @@ h2 {
     text-decoration: none;
 }
 
-/* メディアクエリ - PC (1400-1540px) */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
     .login-form__content {
         padding: 20px 30px;
@@ -99,7 +98,6 @@ h2 {
     }
 }
 
-/* メディアクエリ - タブレット (768-850px) */
 @media screen and (min-width: 768px) and (max-width: 850px) {
     .login-form__content {
         padding: 10px;

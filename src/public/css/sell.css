@@ -1,11 +1,9 @@
-/* 画像プレビューがある場合のために枠作成（JSで使う時） */
 .image-preview {
     width: 200px;
     height: 200px;
     margin-top: 10px;
 }
 
-/* フォームのラッパー調整 */
 form {
     max-width: 700px;
     margin: auto;
@@ -22,14 +20,12 @@ form {
     color: #FF5655;
 }
 
-/* 全体のコンテナ */
 .sell-container {
     max-width: 700px;
     margin: 2rem auto;
     padding: 0 2rem;
 }
 
-/* タイトル */
 .sell-title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -38,7 +34,6 @@ form {
     text-align: center;
 }
 
-/* フォームグループ */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -70,7 +65,6 @@ textarea.form-input {
     min-height: 100px;
 }
 
-/* セレクトボックス */
 .select-wrapper {
     position: relative;
     width: 100%;
@@ -110,7 +104,6 @@ select.form-input {
     font-size: 16px;
 }
 
-/* カスタムセレクトボックス */
 .custom-select {
     position: relative;
     width: 100%;
@@ -168,14 +161,12 @@ select.form-input {
     display: none;
 }
 
-/* エラーメッセージ */
 .error-message {
     color: #dc2626;
     font-size: 0.875rem;
     margin-top: 0.5rem;
 }
 
-/* カテゴリコンテナ */
 .category-container {
     display: flex;
     flex-wrap: wrap;
@@ -183,7 +174,6 @@ select.form-input {
     margin-top: 0.5rem;
 }
 
-/* カテゴリチップ */
 .category-chip {
     position: relative;
     display: inline-block;
@@ -195,21 +185,18 @@ select.form-input {
     font-weight: 500;
 }
 
-/* カテゴリのチェックボックス */
 .category-input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
 }
 
-/* カテゴリテキスト */
 .category-text {
     font-size: 0.875rem;
     color: #FF5655;
     transition: color 0.2s ease;
 }
 
-/* チェックされたカテゴリ */
 .category-input:checked+.category-text {
     color: white;
 }
@@ -221,7 +208,6 @@ select.form-input {
     color: white;
 }
 
-/* 出品ボタン */
 .submit-button {
     background-color: #FF5655;
     color: white;
@@ -234,7 +220,6 @@ select.form-input {
     margin-top: 20px;
 }
 
-/* 画像プレビュー */
 .image-preview {
     width: 200px;
     height: 200px;
@@ -244,7 +229,6 @@ select.form-input {
     margin-top: 0.5rem;
 }
 
-/* 価格入力フィールド */
 .price-input-container {
     position: relative;
     display: flex;
@@ -271,7 +255,6 @@ select.form-input {
     margin: 0;
 }
 
-/* 画像アップロード */
 .image-upload-container {
     width: 100%;
     margin: 0 auto;
@@ -324,7 +307,6 @@ select.form-input {
     opacity: 0.8;
 }
 
-/* セクションタイトル */
 .section-title {
     font-size: 1.25rem;
     font-weight: 600;
@@ -354,7 +336,6 @@ select.form-input {
     display: block;
 }
 
-/* メディアクエリ - PC (1400-1540px) */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
     .sell-container {
         max-width: 900px;

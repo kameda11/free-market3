@@ -137,7 +137,6 @@
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // お気に入りボタンの処理
         document.querySelectorAll('.favorite-button').forEach(button => {
             button.addEventListener('click', async function() {
                 const exhibitionId = this.dataset.id;
@@ -161,7 +160,6 @@
                     });
 
                     if (response.status === 401) {
-                        // 未ログインの場合、ログインページにリダイレクト
                         window.location.href = '/login';
                         return;
                     }
@@ -189,7 +187,6 @@
             });
         });
 
-        // コメントフォームの処理
         const commentForm = document.getElementById('comment-form');
         const commentMessage = document.getElementById('comment-message');
 
@@ -201,13 +198,11 @@
                 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 const url = window.location.origin + '/comments';
 
-                // リクエストデータの準備
                 const requestData = {
                     exhibition_id: formData.get('exhibition_id'),
                     comment: formData.get('comment')
                 };
 
-                // リクエストの送信
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -218,7 +213,6 @@
                     body: JSON.stringify(requestData)
                 });
 
-                // レスポンスの処理
                 const data = await response.json();
 
                 if (response.ok && data.success) {
@@ -226,7 +220,7 @@
                     commentForm.reset();
                     location.reload();
                 } else {
-                    // バリデーションエラーの処理
+
                     if (data.errors) {
                         const errorMessages = Object.values(data.errors).flat();
                         commentMessage.innerHTML = errorMessages.map(msg => `<p class="error">${msg}</p>`).join('');

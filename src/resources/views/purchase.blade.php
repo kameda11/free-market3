@@ -94,21 +94,17 @@
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // カスタムセレクトボックスの実装
         const customSelect = document.querySelector('.payment-select');
         const selectContainer = document.createElement('div');
         selectContainer.className = 'custom-select';
 
-        // 選択表示用の要素を作成
         const selectSelected = document.createElement('div');
         selectSelected.className = 'select-selected';
         selectSelected.textContent = '選択してください';
 
-        // ドロップダウン用の要素を作成
         const selectItems = document.createElement('div');
         selectItems.className = 'select-items select-hide';
 
-        // オプションのスタイルを更新する関数
         function updateOptionStyles() {
             const options = selectItems.querySelectorAll('div');
             options.forEach(option => {
@@ -117,9 +113,8 @@
             });
         }
 
-        // オプションをコピー（空のオプションを除外）
         Array.from(customSelect.options).forEach(option => {
-            if (option.value !== '') { // 空のオプションをスキップ
+            if (option.value !== '') {
                 const div = document.createElement('div');
                 const originalText = option.text.replace('✓', '').replace('　', '');
                 div.textContent = option.selected ? '✓' + originalText : '　' + originalText;
@@ -127,29 +122,23 @@
                     div.classList.add('selected');
                 }
                 div.addEventListener('click', function() {
-                    // 以前の選択を解除
                     selectItems.querySelectorAll('div').forEach(d => d.classList.remove('selected'));
-                    // 新しい選択を設定
                     this.classList.add('selected');
                     customSelect.value = option.value;
                     selectSelected.textContent = this.textContent;
                     selectItems.classList.add('select-hide');
-                    // 元のselectのchangeイベントを発火
                     customSelect.dispatchEvent(new Event('change'));
-                    // オプションのスタイルを更新
                     updateOptionStyles();
                 });
                 selectItems.appendChild(div);
             }
         });
 
-        // 要素を配置
         selectContainer.appendChild(selectSelected);
         selectContainer.appendChild(selectItems);
         customSelect.parentNode.insertBefore(selectContainer, customSelect);
         customSelect.style.display = 'none';
 
-        // クリックイベントの設定
         selectSelected.addEventListener('click', function(e) {
             e.stopPropagation();
             selectItems.classList.toggle('select-hide');
@@ -160,18 +149,15 @@
             selectItems.classList.add('select-hide');
         });
 
-        // 支払い方法の選択
         const paymentMethodInput = document.getElementById('payment_method');
         const paymentMethodDisplay = document.getElementById('payment-method-display');
         const purchaseForm = document.getElementById('purchase-form');
 
-        // 支払い方法の変更を監視
         paymentMethodInput.addEventListener('change', function() {
             const selectedMethod = this.value;
             paymentMethodDisplay.textContent = selectedMethod === '2' ? 'カード払い' : 'コンビニ払い';
         });
 
-        // Stripeの初期化
         const stripeKey = "{{ config('services.stripe.key') }}";
         if (!stripeKey) {
             console.error('Stripe key is not configured');
@@ -179,19 +165,16 @@
         }
         const stripe = Stripe(stripeKey);
 
-        // フォーム送信時の処理
         purchaseForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            if (paymentMethodInput.value === '2') { // カード支払いの場合
+            if (paymentMethodInput.value === '2') {
                 try {
-                    // CSRFトークンを取得
                     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                     if (!token) {
                         throw new Error('CSRF token not found');
                     }
 
-                    // チェックアウトセッションを作成
                     const response = await fetch('/stripe/create-checkout-session', {
                         method: 'POST',
                         headers: {
@@ -213,7 +196,6 @@
                         throw new Error('決済セッションの作成に失敗しました。');
                     }
 
-                    // Stripeのチェックアウトページにリダイレクト
                     const result = await stripe.redirectToCheckout({
                         sessionId: data.id
                     });
@@ -227,7 +209,6 @@
                     alert(error.message || '決済処理中にエラーが発生しました。');
                 }
             } else {
-                // コンビニ支払いの場合は通常のフォーム送信
                 this.submit();
             }
         });

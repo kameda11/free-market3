@@ -61,16 +61,13 @@
 
         buttons.forEach(button => {
             button.addEventListener('click', function() {
-                // Remove active class from all buttons and sections
                 buttons.forEach(btn => btn.classList.remove('active'));
                 sections.forEach(section => section.classList.remove('active'));
 
-                // Add active to clicked button and corresponding section
                 this.classList.add('active');
                 const targetId = this.getAttribute('data-target');
                 document.getElementById(targetId).classList.add('active');
 
-                // Store active tab in session
                 fetch('{{ route("store.tab") }}', {
                     method: 'POST',
                     headers: {

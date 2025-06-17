@@ -24,14 +24,13 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [LoginController::class, 'register'])->name('register');
 
-// 認証済みユーザーのみアクセス可能なルート
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('/cart/add', [ItemController::class, 'add'])->name('cart.add');
     Route::get('/cart', [ItemController::class, 'index'])->name('cart.index');
     Route::get('/address', [UserController::class, 'address']);
     Route::get('/mypage', [UserController::class, 'profile'])->name('mypage');
-    Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/mypage/profile', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::put('/address/update', [UserController::class, 'updateAddress'])->name('address.update');
     Route::get('/purchase/{exhibition_id}', [ItemController::class, 'purchases'])->name('purchase');
     Route::post('/purchase/complete', [ItemController::class, 'complete'])->name('purchase.complete');
@@ -40,7 +39,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/comments', [ItemController::class, 'storeComment'])->name('comments.store');
     Route::post('/favorites/toggle', [ItemController::class, 'toggle'])->name('favorites.toggle');
     Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
-    Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::get('/exhibition/create', [ItemController::class, 'create'])->name('exhibition.create');
     Route::post('/exhibition/store', [ItemController::class, 'store'])->name('exhibition.store');
     Route::get('/email/verify', [LoginController::class, 'showVerificationNotice'])->name('verification.notice');

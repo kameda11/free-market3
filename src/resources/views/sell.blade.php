@@ -126,23 +126,19 @@
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // カスタムセレクトボックスの実装
         const customSelect = document.querySelector('select[name="condition"]');
         const selectContainer = document.createElement('div');
         selectContainer.className = 'custom-select';
 
-        // 選択表示用の要素を作成
         const selectSelected = document.createElement('div');
         selectSelected.className = 'select-selected';
         selectSelected.textContent = customSelect.options[customSelect.selectedIndex].text;
 
-        // ドロップダウン用の要素を作成
         const selectItems = document.createElement('div');
         selectItems.className = 'select-items select-hide';
 
-        // オプションをコピー（空のオプションを除外）
         Array.from(customSelect.options).forEach(option => {
-            if (option.value !== '') { // 空のオプションをスキップ
+            if (option.value !== '') {
                 const div = document.createElement('div');
                 const originalText = option.text.replace('✔', '').replace('　', '');
                 div.textContent = option.selected ? '✔' + originalText : '　' + originalText;
@@ -150,46 +146,39 @@
                     div.classList.add('selected');
                 }
                 div.addEventListener('click', function() {
-                    // 以前の選択を解除
                     selectItems.querySelectorAll('div').forEach(d => d.classList.remove('selected'));
-                    // 新しい選択を設定
                     this.classList.add('selected');
                     customSelect.value = option.value;
                     selectSelected.textContent = this.textContent;
                     selectItems.classList.add('select-hide');
-                    // 元のselectのchangeイベントを発火
                     customSelect.dispatchEvent(new Event('change'));
                 });
                 selectItems.appendChild(div);
             }
         });
 
-        // 要素を配置
         selectContainer.appendChild(selectSelected);
         selectContainer.appendChild(selectItems);
         customSelect.parentNode.insertBefore(selectContainer, customSelect);
         customSelect.style.display = 'none';
 
-        // クリックイベントの設定
         selectSelected.addEventListener('click', function(e) {
             e.stopPropagation();
             selectItems.classList.toggle('select-hide');
             updateOptionStyles();
         });
 
-        // 外側をクリックしたら閉じる
         document.addEventListener('click', function() {
             selectItems.classList.add('select-hide');
         });
 
-        // 選択肢のスタイルを更新する関数
         function updateOptionStyles() {
             const options = customSelect.options;
             const selectItemsDivs = selectItems.querySelectorAll('div');
 
             for (let i = 0; i < options.length; i++) {
                 const option = options[i];
-                if (option.value !== '') { // 空のオプションをスキップ
+                if (option.value !== '') {
                     const originalText = option.text.replace('✔', '').replace('　', '');
                     if (option.selected) {
                         option.text = '✔' + originalText;
@@ -205,10 +194,8 @@
             }
         }
 
-        // 初期表示時に選択状態を更新
         updateOptionStyles();
 
-        // 画像プレビュー機能
         const imageInput = document.querySelector('.image-input');
         const imagePreview = document.querySelector('.image-preview');
         const uploadButton = document.querySelector('.image-upload-button');
