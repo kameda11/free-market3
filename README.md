@@ -65,5 +65,5 @@ php artisan storage:link
 - 開発環境：http://localhost/
 - phpMyAdmin:：http://localhost:8080/
 
-##テストケースの修正
+## テストケースの修正
 ‐ Figmaの画面設計では、メール認証完了後にプロフィール設定画面に遷移する流れになっていたため、テストケースをその仕様に合わせて修正しました。
