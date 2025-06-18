@@ -14,8 +14,8 @@
 3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
 
 4. .envのメール設定を変更する
-・Mailtrapの認証情報を設定してください</br>
-・https://mailtrap.io でアカウントを作成し、認証情報を取得できます</br>
+- Mailtrapの認証情報を設定してください</br>
+- https://mailtrap.io でアカウントを作成し、認証情報を取得できます</br>
 ``` text
 MAIL_MAILER=smtp
 MAIL_HOST=sandbox.smtp.mailtrap.io
@@ -26,8 +26,8 @@ MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="your-email@example.com"
 MAIL_FROM_NAME="${APP_NAME}"
 ```
-・StripeのAPIキーを設定してください</br>
-・https://dashboard.stripe.com/test/apikeys にアクセスし、公開可能キーとシークレットキーを取得して以下を設定してください</br>
+- StripeのAPIキーを設定してください</br>
+- https://dashboard.stripe.com/test/apikeys にアクセスし、公開可能キーとシークレットキーを取得して以下を設定してください</br>
 ``` text
 STRIPE_KEY=your_publishable_key
 STRIPE_SECRET=your_secret_key
@@ -64,3 +64,6 @@ php artisan storage:link
 ## URL
 - 開発環境：http://localhost/
 - phpMyAdmin:：http://localhost:8080/
+
+##テストケースの修正
+‐ Figmaの画面設計では、メール認証完了後にプロフィール設定画面に遷移する流れになっていたため、テストケースをその仕様に合わせて修正しました。
